@@ -1,0 +1,93 @@
+#container {
+	width: 1000px;margin: 10px auto;
+}
+.top {
+ /* position:absolute; left:0; top:0; right:0; */
+ height:90px;width:100%;min-width:1000px;
+ background-color: #07c url('../img/bg-blue.PNG') 0px 0px repeat-x;
+}
+#head_left{width:180px;height:90px;float:left;margin-left:20px;
+	background-image: url("../img/logo-white.png");background-position: -20px -90px;}
+
+
+.myBtn {
+	width: 435px;
+	text-align: right;
+}
+#count{width:400px;height:30px;line-height: 20px;float:right;text-align: right;}
+#delete{width:400px;height:30px;line-height: 30px;float:left;text-align: left;margin-left:20px;}
+
+#footer{width:1000px;height:40px;line-height: 40px;font-size:14px;
+	text-align: right;background: url('../images/box_top.png') 0px 0px repeat-x;margin:30px auto;
+}
+#mess{float:right;width:530px;height:40px;line-height: 30px;text-align: left;}
+#batch_delete{cursor: pointer;}
+
+
+/* 购物车数量 */
+.item_quantity_editer{width:74px;height:22px;margin:0px auto;}
+.item_quantity_editer a{text-decoration: none;color:black;}
+.decrease_one,.increase_one{
+	width:20px;height:20px;line-height:20px;text-align:center;
+	font-size:16px;color:#666;border:1px solid #e0e0e0;cursor:pointer;
+}
+.decrease_one{float:left;}
+.increase_one{float:right;}
+.item_quantity{width:30px;height:20px;text-align: center;}
+#home{width:40px;height:35px;float:right;}
+
+/* 购物结算 */
+#group_price{height:25px;text-align: right;}
+.group_total_price{font-size:18px;color:#ed145b;font-weight: bold;}
+#allPrice{width:1000px;height:40px;line-height: 40px;margin:8px auto;
+	background: url('../images/box_top.png') 0px 0px repeat-x ; 
+}
+.right_handler{width:500px;height:100%;float:right;text-align: right;}
+#go_to_order{display:block;float:right;width:135px;height:36px;text-align:center;
+font-size:18px;background-color:#ed145b;color:white;margin:0px 0px 0px 15px;
+}
+.total_price{color:#ed145b;font-size:18px;font-weight: bold;}
+
+
+
+/* 复制的 */
+.CRZ {
+	table-layout: fixed;
+}
+
+.CRZ td,.CRZ th {
+	padding-left: 0px !important;
+	padding-right: 0px !important;
+	overflow: hidden
+}
+
+.CRC {
+	height: 0px;
+	position: relative;
+}
+
+.CRG {
+	margin-left: -5px;
+	position: absolute;
+	z-index: 5;
+}
+
+.CRG .CRZ {
+	position: absolute;
+	background: none;
+	filter: alpha(opacity = 1);
+	opacity: 0;
+	width: 10px;
+	height: 100%;
+	top: 0px;
+}
+
+.CRL {
+	position: absolute;
+	width: 1px
+}
+
+.CRD {
+	border-left: 1px dotted black
+}
+
