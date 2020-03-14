@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<!-- 设置别名  用于resultType 存在的意义仅在于用来减少类完全限定名的冗余-->
+	<typeAliases>
+		<!-- 方式一：单个起别名 -->
+		<typeAlias type="cn.com.gs.ssm.libraryMIS.model.User" alias="user"/>
+		<typeAlias type="cn.com.gs.ssm.libraryMIS.model.Book" alias="book"/>
+		
+		<!-- 方式二：批量起别名，扫描指定包下的所有类，扫描之后的别名就是类名（不区分大小写），建议使用的时候和类名一致 
+		<package name="cn.com.gs.ssm.libraryMIS.model"/>-->
+	</typeAliases>
+	<!-- 数据源配置 (交给spring配置)  -->
+	
+	<!-- 配置mapper映射文件 -->
+	<mappers>
+		<!-- 方式一：使用resouce，单个映射xml文件 -->
+		<mapper resource="cn/com/gs/ssm/libraryMIS/mapper/UserMapper.xml"/>
+		<mapper resource="cn/com/gs/ssm/libraryMIS/mapper/BookMapper.xml"/>
+		
+		<!-- 方式二：使用class，单个映射接口的xml 
+			要求：遵循约定，xml与接口在一个包内，且同名
+		-->
+		<!-- <mapper class="cn.com.gs.ssm.libraryMIS.dao.book.BookDao"/> -->
+		
+		<!-- 方式三：package，使用接口所在包进行配置，批量映射接口的xml
+			要求：遵循约定，xml与接口在一个包内，且同名
+		 -->
+		<!-- <package name="cn.com.gs.ssm.libraryMIS.dao"/> -->
+		
+		<!-- 方式四： applicationContext-spring.xml配置SqlSessionFactoryBean的属性
+		当mapper中的接口文件与xml文件在不同包下，批量映射
+		-->
+	</mappers>
+</configuration>
+
+

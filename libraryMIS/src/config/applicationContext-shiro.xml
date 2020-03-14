@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+    			http://www.springframework.org/schema/beans/spring-beans-3.2.xsd  
+                http://www.springframework.org/schema/context  
+                http://www.springframework.org/schema/context/spring-context-3.2.xsd  
+                http://www.springframework.org/schema/tx   
+                http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+                http://www.springframework.org/schema/aop
+                http://www.springframework.org/schema/aop/spring-aop-3.2.xsd ">
+	
+	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+		<property name="realm" ref="sysUserRealm"></property>
+		<property name="cacheManager" ref="ehcacheManager"/>
+	</bean>
+	
+	<!--  自定义url过滤器和解析验证器：但是会拦截每一个url，而数据库不可能存储所有url，故舍弃！
+		      解决办法：在controller里使用@RequiresPermissions("base64:toBase64")，控制菜单级别的权限验证
+		      	在页面使用<shiro:hasPermission name="base64:toBase64Encode"></shiro:hasPermission>
+	  -->
+<!-- 	<bean id="urlPermissionFilter" class="cn.com.gs.ssm.libraryMIS.filter.UrlPermissionFilter"></bean> -->
+<!-- 	<bean id="urlPermissionResolver" class="cn.com.gs.ssm.libraryMIS.filter.UrlPermissionResolver"></bean> -->
+	<bean id="sysUserRealm" class="cn.com.gs.ssm.libraryMIS.realm.SysUserRealm">
+<!-- 		<property name="permissionResolver" ref="urlPermissionResolver"></property> -->
+	</bean>
+	
+	<!-- ehcache缓存:shiro默认集成了ehcache的简单配置文件，若要自定义请放于src下 -->
+	<bean id="ehcacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+		<property name="cacheManagerConfigFile" value="classpath:config/ehcache.xml" ></property>
+	</bean>
+	
+	<!-- 注入shiro过滤器 -->
+	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+		<!-- 1.配置securityManager，是一个对象所以用ref引用 -->
+		<property name="securityManager" ref="securityManager"></property>
+		<!-- 2.配置loginUrl，当访问需要认证的资源时，若果没有认证，则跳转到该页面;如果不设置默认会自动寻找Web工程根目录下的"/login.jsp"页面 -->
+		<property name="loginUrl" value="/sysUser/toLogin.do"></property>
+		<!-- 3.配置successUrl，当认证成功后，就跳转至该页面。通常不设置，若不设置，认证成功后会跳转到上一个url -->
+		<property name="successUrl" value="/sysUser/toMain.do"></property>
+		<!-- 4.配置unauthorizedUrl，没有权限访问时，跳转至该页面(很容易出现问题：直接异常出错，并不跳转！！！) 
+			解决办法：在spring-mvc的配置文件中注入org.springframework.web.servlet.handler.SimpleMappingExceptionResolver
+				指定一个exception的Properties对象
+			<property name="unauthorizedUrl" value="/sysUser/toRefuse.do"></property>
+		-->
+		
+		<!-- 5.配置filterChainDefinitions过滤器链，anon=匿名访问，authc=需要认证 -->
+		<property name="filterChainDefinitions">
+			<value>
+				/sysUser/toLogin.do=anon
+				/sysUser/toShiroLogin.do=anon
+				/sysUser/login.do=anon
+				/sysUser/timeout.do=anon
+				/sysUser/toRefuse.do=anon
+				/static/**=anon
+				/2/**=anon
+				/bootstrap/**=anon
+				/css/**=anon
+				/Hui-iconfont/**=anon
+				/images/**=anon
+				/img/**=anon
+				/js/**=anon
+				/**=authc
+			</value>
+		</property>
+	</bean>
+	
+	
+</beans>

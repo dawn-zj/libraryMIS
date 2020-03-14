@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.gs.ssm.libraryMIS.dao.RoleDao">
+	<select id="getRoleById" parameterType="int" resultMap="roleMap">
+		select * from gs_role where id = #{id};
+	</select>
+	
+	<select id="getRole" parameterType="int" resultMap="roleMap">
+		select * from gs_role;
+	</select>
+	
+	<!-- 改 -->
+	<update id="roleMenu" parameterType="int">
+		update gs_role set menu_id=#{menuIds},button_id=#{buttonIds},UPDATE_TIME=#{update_time} where ID=#{id};
+	</update>
+	<!-- 改 -->
+	
+	<!-- id为主键映射；result其他基本数据库表字段到实体类属性的映射 -->
+	<resultMap type="role" id="roleMap">
+		<result property="menuId" column="menu_id"/>
+		<result property="buttonId" column="button_id"/>
+		<result property="generateTime" column="GENERATE_TIME"/>
+		<result property="updateTime" column="UPDATE_TIME"/>
+	</resultMap>
+</mapper>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+    			http://www.springframework.org/schema/beans/spring-beans-3.2.xsd  
+                http://www.springframework.org/schema/context  
+                http://www.springframework.org/schema/context/spring-context-3.2.xsd  
+                http://www.springframework.org/schema/tx   
+                http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+                http://www.springframework.org/schema/aop
+                http://www.springframework.org/schema/aop/spring-aop-3.2.xsd ">
+
+	<!-- spring对于类的bean配置，交给SpringMVC的注解自动注入 -->
+
+	<!-- 数据源配置 (myBatis和Spring共用) -->
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location">
+			<!-- <value>classpath:database.properties</value> -->
+			<value>file:E:/GSConf/conf/config.properties</value>
+		</property>
+	</bean>
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="${jdbc.driverClassName}"></property>
+		<property name="url" value="${jdbc.url}"></property>
+		<property name="username" value="${jdbc.username}"></property>
+		<property name="password" value="${jdbc.password}"></property>
+	</bean>
+
+	<!-- myBatis测试时的利用sqlSessionFactory加载配置文件 -->
+	<!-- 配置sqlSessionFactory -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<!-- mybatis配置文件路径 -->
+		<property name="configLocation" value="classpath:config/SqlMapConfig.xml" />
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<!-- 1.传统方式：配置sqlsession 产生这个实例就是通过 SqlSessionTemplate来实现的 -->
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg index="0"><ref bean="sqlSessionFactory" /></constructor-arg>
+	</bean>
+	<!-- 2.Mapper代理：配置mapper扫描，自动生成dao实现类，生成的bean名字为Mapper类名，首字母小写 -->
+	<bean id="mapper" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<!-- 指定扫描包路径，即mapper接口包路径 -->
+		<property name="basePackage" value="cn.com.gs.ssm.libraryMIS.dao,cn.com.gs.ssm.libraryMIS.mapper" />
+		<!-- 配置sqlSessionFactory -->
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+	</bean>
+
+	<!-- 配置事务管理 -->
+	<bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<!-- 开启事务注解 -->
+	<tx:annotation-driven transaction-manager="txManager" />
+
+	<!-- 利用AOP,实现对Service的声明式事务管理 -->
+	<!-- 通知 -->
+	<tx:advice id="txAdvice" transaction-manager="txManager">
+		<tx:attributes>
+			<tx:method name="*" rollback-for="java.lang.Exception" />
+		</tx:attributes>
+	</tx:advice>
+
+	<!-- 注入切面 ，日志执行的方法-->
+	<!-- 注入切点，使用注解注入 -->
+	<bean id="logAspectBean" class="cn.com.gs.ssm.libraryMIS.aop.LogAspect" />
+	<!-- <bean id="serviceA" class="com.ssm.libraryMIS.controller.ServiceA" />
+	<bean id="serviceB" class="com.ssm.libraryMIS.controller.ServiceB" /> -->
+	
+	<aop:config>
+		<!-- 指向切面 -->
+		<aop:aspect id="logAspect" ref="logAspectBean">
+			<!-- 切入点表达式 -->
+			<aop:pointcut id="logPointcut" expression="execution(* cn.com.gs.ssm.libraryMIS.controller.*.*(..))"/>
+			<!-- 在切入点周围要执行的方法，仅仅around支持ProceedingJoinPoint -->
+			<aop:around pointcut-ref="logPointcut" method="doAround"/>
+		</aop:aspect>
+	</aop:config>
+</beans>

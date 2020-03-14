@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace=对应Mapper接口路径，暂时xml与接口放在一个包 -->
+<mapper namespace="cn.com.gs.ssm.libraryMIS.dao.book.BookDao">
+	<!--  resultType的值：应写为返回值所属类的路径
+						也可以用config配置文件中自定义的别名（已内嵌了一些别名，eg：int、string）  -->
+	
+	<!-- 增 -->
+	<!-- 
+		id=Mapper接口的方法名，
+		parameterType=参数类路径（可手动起别名，也可注解扫描起别名）（多个参数时不用写）
+	-->
+	<insert id="insertBook" parameterType="book">
+		insert into gs_book values(#{id},#{name},#{author},#{publish},#{time},#{price})
+	</insert> 
+	<!-- 增 -->
+	
+	
+	<!-- 删 -->
+	<delete id="deleteBook" parameterType="string">
+		delete from gs_book where id=#{id}
+	</delete>
+	<delete id="batchDeleteBooks" parameterType="string">
+		delete from gs_book where id = #{bookId}
+		<!-- <foreach collection="array" open="(" close=")" item="bookId" separator=",">
+			#{bookId}
+		</foreach> -->
+	</delete>
+	<!-- 删 -->
+	
+	
+	<!-- 改 -->
+	<update id="updateBook" parameterType="book">
+		update gs_book set name=#{name},author=#{author},publish=#{publish},time=#{time},price=#{price} where id=#{id}
+	</update>
+	<!-- 改 -->
+	
+	
+	<!-- 查 （分页） -->
+	<select id="searchBookByPage" resultType="book">
+		select * from gs_book where 1=1 
+		
+			<if test="book.name !=null and book.name !=''">
+				and name like concat('%',#{book.name},'%') 
+			</if>
+			<if test="book.author !=null and book.author !=''">
+				and author like concat('%',#{book.author},'%') 
+			</if>
+			 limit #{start},#{end} 
+			<!--limit 0,5-->
+		
+	</select>
+	<select id="selectBookById" parameterType="string" resultType="book">
+		select * from gs_book where id=#{id}
+	</select>
+	
+	
+	<!--  resultType的值是在config配置文件中自定义的别名  -->
+	<select id="searchTotal" parameterType="book"  resultType="int">
+		select count(*) from gs_book
+		<where>
+			<if test="name!=null and name!=''">
+				and name like concat('%',#{name},'%')
+			</if>
+			<if test="author!=null and author!=''">
+				and author like concat('%',#{author},'%')
+			</if>
+		</where>
+	</select>
+	<!-- 查 -->
+	
+</mapper>

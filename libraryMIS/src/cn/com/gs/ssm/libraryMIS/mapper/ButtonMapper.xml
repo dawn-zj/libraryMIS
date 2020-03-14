@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.gs.ssm.libraryMIS.dao.ButtonDao">
+	<select id="getButtonById" parameterType="int" resultType="button">
+		select * from gs_button where id = #{id};
+	</select>
+	
+	<select id="getButtonByUserId" parameterType="int" resultType="button">
+		select * from gs_button where id = #{id};
+	</select>
+	
+	<select id="getButtonByMenuId" parameterType="int" resultType="button">
+		select * from gs_button where menuId = #{menuId};
+	</select>
+</mapper>
