@@ -11,7 +11,7 @@ public class Constants {
 
 	public static final String PHOTO_SUFFIX = ".png"; // 图片后缀
 	public static final String PDF_SUFFIX = ".pdf"; // pdf后缀
-	public static final String ZIP_SUFFIX = ".zip"; // 密钥备份后缀
+	public static final String ZIP_SUFFIX = ".zip"; // 压缩文件后缀
 	public static final String LOG_SUFFIX = ".log"; // log文件后缀
 	public static final String TXT_SUFFIX = ".txt"; // txt文件后缀
 	public static final String CONF_SUFFIX = ".properties"; // properties文件后缀
