@@ -7,6 +7,8 @@ public class ErrMsg {
 
 	static {
 		container.put(ErrCode.NO_ERROR_DESC, "没有对应的错误描述");
+
+		container.put(ErrCode.GEN_PHOTO_ERROR, "生成图片错误");
 	}
 
 	public static String getErrMsg(int errorNum) {
