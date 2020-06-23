@@ -11,7 +11,7 @@ public class LoggerMsgUtil {
 	private static Hashtable<String, String> container = new Hashtable<String, String>();
 
 	static {
-		container.put(Constants.LOG_OPTYPE_SYSUSERLOGIN, "登录");
+		container.put(Constants.LOG_OPTYPE_SYSUSER_LOGIN, "登录");
 	}
 
 	public static String getLoggerMsg(String logOptype) {

@@ -26,9 +26,9 @@ public class Constants {
 	public static final int RSA_KEY_SIZE_1024 = 1024;
 
 	//日志类型
-	public static final String LOG_OPTYPE_SYSUSERLOGIN = "LOG_OPTYPE_SYSUSERLOGIN";
+	public static final String LOG_OPTYPE_SYSUSER_LOGIN = "LOG_OPTYPE_SYSUSER_LOGIN";
 	//邮件
-	public static final String emailAccount = "867096367@qq.com";//3385528945
-	public static final String emailAuthzPassword = "wxpqpjeklcsvbgag";//zj19970818 授权码
+	public static final String Email_Account = "867096367@qq.com";//3385528945
+	public static final String Email_Authz_Password = "wxpqpjeklcsvbgag";//zj19970818 授权码
 	
 }
