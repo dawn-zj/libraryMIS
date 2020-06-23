@@ -1,5 +1,6 @@
 package cn.com.gs.ssm.libraryMIS.controller.book;
 
+import cn.com.gs.common.util.logger.LoggerUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,7 +20,7 @@ public class BookController {
 	@Autowired
 	private IBookService bookService;
 	
-	private static Logger logger = Logger.getLogger(Log4jTest.class);
+//	private static Logger logger = Logger.getLogger(Log4jTest.class);
 	
 	/**
 	 * 分页查询图书
@@ -27,7 +28,8 @@ public class BookController {
 	@RequestMapping("bookList")//传当前页
 	@LibraryLog(optype = "selectBook")
 	public ModelAndView bookList(Page<Book> page, Book bk,ModelAndView mv){
-		logger.error("查询图书");
+//		logger.error("查询图书");
+		LoggerUtil.debug("查询图书");
 		page = bookService.searchBookByPage(page, bk);
 		mv.addObject("book",bk);
 		mv.addObject("page",page);

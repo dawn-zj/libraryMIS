@@ -5,7 +5,7 @@
 		<c:forEach items="${menuList }" var="menu1">
 			<c:if test="${menu1.pid  == -1}">
 				<dl id="menu-article">
-					<dt><i class="Hui-iconfont">${menu1.img }</i> ${menu1.name }<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+					<dt><i class="Hui-iconfont ${menu1.img }"></i> ${menu1.name }<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
 					<dd>
 						<ul>
 							<c:forEach items="${menuList }" var="menu2">
