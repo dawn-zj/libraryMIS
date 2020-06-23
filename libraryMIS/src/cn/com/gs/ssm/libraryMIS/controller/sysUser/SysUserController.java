@@ -54,7 +54,7 @@ public class SysUserController {
 		return "timeout";
 	}
 	@RequestMapping("/login")
-	@LibraryLog(optype = Constants.LOG_OPTYPE_SYSUSERLOGIN)
+	@LibraryLog(optype = Constants.LOG_OPTYPE_SYSUSER_LOGIN)
 	public String login(User user) {
 		/* 方式一：使用shiro的登录认证
 		 * 用户点击登录，先经过shiro的过滤器，无需认证本方法

@@ -27,8 +27,8 @@ public class emailServiceImpl implements IEmailService{
 		 * 3.设置邮件传输协议、邮件主机、是否开启密码安全校验
 		 */
 		
-		String myEmailAccount = Constants.emailAccount;
-		String myEmailAuthzPassword = Constants.emailAuthzPassword;
+		String myEmailAccount = Constants.Email_Account;
+		String myEmailAuthzPassword = Constants.Email_Authz_Password;
 		
 		Properties props = new Properties();
 		props.put("mail.host", "smtp.qq.com");//邮箱发送主机
