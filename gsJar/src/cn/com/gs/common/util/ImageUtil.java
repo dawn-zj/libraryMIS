@@ -3,8 +3,7 @@ package cn.com.gs.common.util;
 import cn.com.gs.common.exception.NetGSRuntimeException;
 import cn.com.gs.common.resource.ErrCode;
 
-import java.awt.Graphics2D;
-import java.awt.Image;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import javax.imageio.ImageIO;
@@ -145,9 +144,81 @@ public class ImageUtil {
 		return bufferedImage;
 	}
 
-	public static void main(String[] args) {
-		byte[] photoData = transferAlpha("F:/temp/seal.png");
-		FileUtil.storeFile("F:/temp/sealConventBGColor.png", photoData);
-		System.out.println("图片处理完毕！");
+	/**
+	 * 图片添加水印
+	 *
+	 * @param srcImagePath     原图片路径
+	 * @param tarImagePath     目标存储路径
+	 * @param waterMarkContent 文字水印内容
+	 * @param color            颜色
+	 * @param font             字体
+	 */
+	public static void addWaterMark(String srcImagePath, String tarImagePath, String waterMarkContent, Color color, Font font) throws Exception {
+		/*
+		* 1.获取原图宽高；
+		* 2.创建同等宽高画板，创建图像，画原图；
+		* 3.计算坐标位置，画水印；
+		* 4.释放资源；
+		* 5.输出图像；
+		*
+		* */
+
+		//1.获取图片的宽和高
+		File srcImgFile = new File(srcImagePath);
+		Image srcImg = ImageIO.read(srcImgFile);
+		int srcImgwidth = srcImg.getWidth(null);
+		int srcImgheight = srcImg.getHeight(null);
+
+		//画水印需要一个画板，创建一个画板
+		BufferedImage buffImg = new BufferedImage(srcImgwidth,srcImgheight,BufferedImage.TYPE_INT_RGB);
+		//创建一个2D的图像
+		Graphics2D g = buffImg.createGraphics();
+		//画出来
+		g.drawImage(srcImg, 0, 0, srcImgwidth, srcImgheight,null);
+
+		//设置水印的颜色
+		g.setColor(color);
+		//设置水印的字体
+		g.setFont(font);
+		//设置水印坐标
+		int x = srcImgwidth*19/20 - getwaterMarkLength(waterMarkContent, g);
+		int y = srcImgheight*9/10;
+		//根据获取的坐标 在相应的位置画出水印
+		g.drawString(waterMarkContent, x, y);
+
+		//释放画板的资源
+		g.dispose();
+
+		//输出新的图片
+		FileOutputStream outputStream = new FileOutputStream(tarImagePath);
+		ImageIO.write(buffImg, "jpg", outputStream);
+		System.out.println("水印添加完成！");
+
+	}
+
+	/**
+	 * 获取水印的坐标
+	 * @param watermarkContent
+	 * @param g
+	 * @return
+	 */
+	public static int getwaterMarkLength(String watermarkContent,Graphics2D g) {
+
+		return	g.getFontMetrics(g.getFont()).charsWidth(watermarkContent.toCharArray(), 0, watermarkContent.length());
+
+	}
+
+	public static void main(String[] args) throws Exception {
+//		byte[] photoData = transferAlpha("F:/temp/seal.png");
+//		FileUtil.storeFile("F:/temp/sealConventBGColor.png", photoData);
+//		System.out.println("图片处理完毕！");
+
+		Font font = new Font("微软雅黑",Font.PLAIN,32);
+		String watermarkContent = "java水印开发系统";
+		Color color = new Color(255, 255, 255,0);
+
+		String srcImgPath = "F:/temp/1.jpg";
+		String tarImgPath = "F:/temp/1_1.jpg";
+		addWaterMark(srcImgPath, tarImgPath, watermarkContent, color, font);
 	}
 }
