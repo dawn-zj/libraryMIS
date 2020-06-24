@@ -5,7 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping(value = "/base64")
+@RequestMapping(value = "/tool/base64")
 public class Base64Controller {
 	
 	@RequiresPermissions("base64:toBase64")

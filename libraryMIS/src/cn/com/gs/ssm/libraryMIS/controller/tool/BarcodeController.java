@@ -1,4 +1,4 @@
-package cn.com.gs.ssm.libraryMIS.controller.zxing;
+package cn.com.gs.ssm.libraryMIS.controller.tool;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import cn.com.gs.ssm.libraryMIS.service.impl.zxing.BarcodeServiceImpl;
 
 @Controller
-@RequestMapping("/barcode")
+@RequestMapping("/tool/barcode")
 public class BarcodeController {
 	@Autowired
 	private BarcodeServiceImpl barcodeService;

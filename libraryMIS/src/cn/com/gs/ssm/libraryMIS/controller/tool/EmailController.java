@@ -1,4 +1,4 @@
-package cn.com.gs.ssm.libraryMIS.controller.email;
+package cn.com.gs.ssm.libraryMIS.controller.tool;
 
 import java.util.HashMap;
 
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import cn.com.gs.ssm.libraryMIS.service.IEmailService;
 
 @Controller
-@RequestMapping("/email")
+@RequestMapping("/tool/email")
 public class EmailController {
 	@Autowired
 	public IEmailService emailService;
