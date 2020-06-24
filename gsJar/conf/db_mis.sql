@@ -125,26 +125,40 @@ INSERT INTO `gs_button` VALUES ('3003', '批量删除', '/book/deleteBook.do', '
 -- Records of gs_menu
 -- ----------------------------
 INSERT INTO `gs_menu` VALUES ('100000', '用户管理', '#', '-1', 'Hui-iconfont-root\r\nHui-iconfont-root\r\nHui-iconfont-root', null, null, null, null);
+INSERT INTO `gs_menu` VALUES ('110000', '图书管理', '#', '-1', 'Hui-iconfont-news', null, null, null, null);
+INSERT INTO `gs_menu` VALUES ('120000', '系统管理', '#', '-1', 'Hui-iconfont-tongji', null, null, null, null);
+INSERT INTO `gs_menu` VALUES ('130000', '工具管理', '#', '-1', 'Hui-iconfont-manage2', null, null, null, null);
+
+
 INSERT INTO `gs_menu` VALUES ('100100', '管理员管理', '/sysUser/sysUserList.do', '100000', null, null, null, null, null);
 INSERT INTO `gs_menu` VALUES ('100101', '管理员管理', '#', '100100', null, null, null, null, null);
+
 INSERT INTO `gs_menu` VALUES ('100200', '角色管理', '/role/roleList.do', '100000', null, null, null, null, null);
 INSERT INTO `gs_menu` VALUES ('100201', '角色管理', '#', '100200', null, null, null, null, null);
-INSERT INTO `gs_menu` VALUES ('110000', '图书管理', '#', '-1', 'Hui-iconfont-news', null, null, null, null);
+
+
 INSERT INTO `gs_menu` VALUES ('110100', '图书管理', '/book/bookList.do', '110000', null, null, null, null, null);
 INSERT INTO `gs_menu` VALUES ('110101', '图书管理', '#', '110100', null, null, null, null, null);
-INSERT INTO `gs_menu` VALUES ('120000', '系统管理', '#', '-1', 'Hui-iconfont-tongji', null, null, null, null);
+
+
 INSERT INTO `gs_menu` VALUES ('120100', '系统设置', '/system/systemManage.do', '120000', null, null, null, null, null);
 INSERT INTO `gs_menu` VALUES ('120101', '系统设置', '#', '120100', null, null, null, null, null);
+
 INSERT INTO `gs_menu` VALUES ('120200', '数据字典', '/system/dictionaryList.do', '120000', null, null, null, null, null);
 INSERT INTO `gs_menu` VALUES ('120201', '数据字典', '#', '120200', null, null, null, null, null);
-INSERT INTO `gs_menu` VALUES ('130000', '工具管理', '#', '-1', 'Hui-iconfont-manage2', null, null, null, null);
-INSERT INTO `gs_menu` VALUES ('130100', '在线二维码', '/barcode/barcodeManage.do', '130000', null, null, null, null, null);
+
+INSERT INTO `gs_menu` VALUES ('130100', '在线二维码', '/tool/barcode/barcodeManage.do', '130000', null, null, null, null, null);
 INSERT INTO `gs_menu` VALUES ('130101', '在线二维码', '#', '130100', null, null, null, null, null);
-INSERT INTO `gs_menu` VALUES ('130200', '邮件测试', '/email/emailManage.do', '130000', null, null, null, null, null);
+
+INSERT INTO `gs_menu` VALUES ('130200', '邮件测试', '/tool/email/emailManage.do', '130000', null, null, null, null, null);
 INSERT INTO `gs_menu` VALUES ('130201', '邮件测试', '#', '130200', null, null, null, null, null);
-INSERT INTO `gs_menu` VALUES ('130300', 'Base64编解码', '/base64/toBase64.do', '130000', null, null, null, null, 'base64:toBase64');
-INSERT INTO `gs_menu` VALUES ('130301', 'Base64编码', '/base64/toBase64Encode.do', '130300', null, null, null, null, 'base64:toBase64Encode');
-INSERT INTO `gs_menu` VALUES ('130302', 'Base64解码', '/base64/toBase64Decode.do', '130300', null, null, null, null, 'base64:toBase64Decode');
+
+INSERT INTO `gs_menu` VALUES ('130300', 'Base64编解码', '/tool/base64/toBase64.do', '130000', null, null, null, null, 'base64:toBase64');
+INSERT INTO `gs_menu` VALUES ('130301', 'Base64编码', '/tool/base64/toBase64Encode.do', '130300', null, null, null, null, 'base64:toBase64Encode');
+INSERT INTO `gs_menu` VALUES ('130302', 'Base64解码', '/tool/base64/toBase64Decode.do', '130300', null, null, null, null, 'base64:toBase64Decode');
+
+INSERT INTO `gs_menu` VALUES ('130400', '拾色器', '/tool/colorpicker/toColorpicker.do', '130000', null, null, null, null, null);
+INSERT INTO `gs_menu` VALUES ('130401', '拾色器', '#', '130400', null, null, null, null, null);
 
 -- ----------------------------
 -- Records of gs_role
