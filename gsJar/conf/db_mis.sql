@@ -29,18 +29,6 @@ CREATE TABLE `gs_book` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1010 DEFAULT CHARSET=utf8;
 
--- ----------------------------
--- Records of gs_book
--- ----------------------------
-INSERT INTO `gs_book` VALUES ('1001', '1', '1', '简氏出版社', '1', '1.00');
-INSERT INTO `gs_book` VALUES ('1002', '2', '2', '2', '2', '2.00');
-INSERT INTO `gs_book` VALUES ('1003', '3', '3', '3', '3', '3.00');
-INSERT INTO `gs_book` VALUES ('1004', '4', '4', '4', '4', '4.00');
-INSERT INTO `gs_book` VALUES ('1005', '5', '5', '5', '5', '5.00');
-INSERT INTO `gs_book` VALUES ('1006', '6', '6', '6', '6', '6.00');
-INSERT INTO `gs_book` VALUES ('1007', '7', '7', '7', '7', '7.00');
-INSERT INTO `gs_book` VALUES ('1008', '8', '8', '8', '8', '8.00');
-INSERT INTO `gs_book` VALUES ('1009', '9', '9', '9', '9', '9.00');
 
 -- ----------------------------
 -- Table structure for `gs_button`
@@ -58,12 +46,6 @@ CREATE TABLE `gs_button` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3004 DEFAULT CHARSET=utf8;
 
--- ----------------------------
--- Records of gs_button
--- ----------------------------
-INSERT INTO `gs_button` VALUES ('3001', '添加图书', '/book/toAddBook.do', '110101', 'book:toAdd', null, null, null);
-INSERT INTO `gs_button` VALUES ('3002', '修改图书', '/book/toAddBook.do', '110101', 'book:toUpdate', null, null, null);
-INSERT INTO `gs_button` VALUES ('3003', '批量删除', '/book/deleteBook.do', '110101', 'book:delete', null, null, null);
 
 -- ----------------------------
 -- Table structure for `gs_menu`
@@ -81,6 +63,63 @@ CREATE TABLE `gs_menu` (
   `MENUCODE` varchar(64) DEFAULT NULL,
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=130303 DEFAULT CHARSET=utf8;
+
+
+-- ----------------------------
+-- Table structure for `gs_role`
+-- ----------------------------
+DROP TABLE IF EXISTS `gs_role`;
+CREATE TABLE `gs_role` (
+  `ID` int(22) NOT NULL AUTO_INCREMENT,
+  `NAME` varchar(64) NOT NULL,
+  `MENU_ID` varchar(2560) DEFAULT NULL,
+  `BUTTON_ID` varchar(2560) DEFAULT NULL,
+  `GENERATE_TIME` int(22) DEFAULT NULL,
+  `UPDATE_TIME` int(22) DEFAULT NULL,
+  `MAC` varchar(256) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=2003 DEFAULT CHARSET=utf8;
+
+
+-- ----------------------------
+-- Table structure for `gs_user`
+-- ----------------------------
+DROP TABLE IF EXISTS `gs_user`;
+CREATE TABLE `gs_user` (
+  `id` int(22) NOT NULL AUTO_INCREMENT,
+  `name` varchar(64) NOT NULL,
+  `account` varchar(256) NOT NULL,
+  `password` varchar(256) NOT NULL,
+  `roleId` int(22) DEFAULT NULL,
+  `status` int(22) DEFAULT NULL,
+  `failedNum` int(22) DEFAULT NULL,
+  `changePass` int(22) DEFAULT NULL,
+  `companyId` int(22) DEFAULT NULL,
+  `generateTime` int(22) DEFAULT NULL,
+  `updateTime` int(22) DEFAULT NULL,
+  `mac` varchar(256) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1003 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of gs_book
+-- ----------------------------
+INSERT INTO `gs_book` VALUES ('1001', '1', '1', '简氏出版社', '1', '1.00');
+INSERT INTO `gs_book` VALUES ('1002', '2', '2', '2', '2', '2.00');
+INSERT INTO `gs_book` VALUES ('1003', '3', '3', '3', '3', '3.00');
+INSERT INTO `gs_book` VALUES ('1004', '4', '4', '4', '4', '4.00');
+INSERT INTO `gs_book` VALUES ('1005', '5', '5', '5', '5', '5.00');
+INSERT INTO `gs_book` VALUES ('1006', '6', '6', '6', '6', '6.00');
+INSERT INTO `gs_book` VALUES ('1007', '7', '7', '7', '7', '7.00');
+INSERT INTO `gs_book` VALUES ('1008', '8', '8', '8', '8', '8.00');
+INSERT INTO `gs_book` VALUES ('1009', '9', '9', '9', '9', '9.00');
+
+-- ----------------------------
+-- Records of gs_button
+-- ----------------------------
+INSERT INTO `gs_button` VALUES ('3001', '添加图书', '/book/toAddBook.do', '110101', 'book:toAdd', null, null, null);
+INSERT INTO `gs_button` VALUES ('3002', '修改图书', '/book/toAddBook.do', '110101', 'book:toUpdate', null, null, null);
+INSERT INTO `gs_button` VALUES ('3003', '批量删除', '/book/deleteBook.do', '110101', 'book:delete', null, null, null);
 
 -- ----------------------------
 -- Records of gs_menu
@@ -108,45 +147,10 @@ INSERT INTO `gs_menu` VALUES ('130301', 'Base64编码', '/base64/toBase64Encode.
 INSERT INTO `gs_menu` VALUES ('130302', 'Base64解码', '/base64/toBase64Decode.do', '130300', null, null, null, null, 'base64:toBase64Decode');
 
 -- ----------------------------
--- Table structure for `gs_role`
--- ----------------------------
-DROP TABLE IF EXISTS `gs_role`;
-CREATE TABLE `gs_role` (
-  `ID` int(22) NOT NULL AUTO_INCREMENT,
-  `NAME` varchar(64) NOT NULL,
-  `MENU_ID` varchar(2560) DEFAULT NULL,
-  `BUTTON_ID` varchar(2560) DEFAULT NULL,
-  `GENERATE_TIME` int(22) DEFAULT NULL,
-  `UPDATE_TIME` int(22) DEFAULT NULL,
-  `MAC` varchar(256) DEFAULT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=2003 DEFAULT CHARSET=utf8;
-
--- ----------------------------
 -- Records of gs_role
 -- ----------------------------
 INSERT INTO `gs_role` VALUES ('2001', '超级管理员', '100000, 100100, 100101, 100200, 100201, 110000, 110100, 110101, 120000, 120100, 120101, 120200, 120201, 130000, 130100, 130101, 130200, 130201, 130300, 130301, 130302', '3001, 3002', '-1', '1668256872', null);
 INSERT INTO `gs_role` VALUES ('2002', '图书管理员', '110000, 110100, 110101', '3001, 3002', '-1', '-1467843596', null);
-
--- ----------------------------
--- Table structure for `gs_user`
--- ----------------------------
-DROP TABLE IF EXISTS `gs_user`;
-CREATE TABLE `gs_user` (
-  `id` int(22) NOT NULL AUTO_INCREMENT,
-  `name` varchar(64) NOT NULL,
-  `account` varchar(256) NOT NULL,
-  `password` varchar(256) NOT NULL,
-  `roleId` int(22) DEFAULT NULL,
-  `status` int(22) DEFAULT NULL,
-  `failedNum` int(22) DEFAULT NULL,
-  `changePass` int(22) DEFAULT NULL,
-  `companyId` int(22) DEFAULT NULL,
-  `generateTime` int(22) DEFAULT NULL,
-  `updateTime` int(22) DEFAULT NULL,
-  `mac` varchar(256) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1003 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of gs_user
