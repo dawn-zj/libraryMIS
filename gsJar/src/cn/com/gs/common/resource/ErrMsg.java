@@ -9,6 +9,8 @@ public class ErrMsg {
 		container.put(ErrCode.NO_ERROR_DESC, "没有对应的错误描述");
 
 		container.put(ErrCode.GEN_PHOTO_ERROR, "生成图片错误");
+
+		container.put(ErrCode.PAGE_NUM_OVER_LIMIT_IN_PDF, "页码超出PDF文件范围");
 	}
 
 	public static String getErrMsg(int errorNum) {

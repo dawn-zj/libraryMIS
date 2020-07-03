@@ -6,4 +6,7 @@ public class ErrCode {
 
 	public static final int GEN_PHOTO_ERROR = 80005000;
 
+	// 页码超出PDF文件范围
+	public static final int PAGE_NUM_OVER_LIMIT_IN_PDF = 80040015;
+
 }
