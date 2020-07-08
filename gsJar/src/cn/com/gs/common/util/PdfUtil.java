@@ -3,21 +3,20 @@ package cn.com.gs.common.util;
 import java.io.*;
 import java.util.Properties;
 
+import cn.com.gs.common.define.Constants;
 import cn.com.gs.common.exception.NetGSRuntimeException;
 import cn.com.gs.common.resource.ErrCode;
+import cn.com.gs.common.util.date.DateUtil;
 import cn.com.gs.common.util.logger.LoggerUtil;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.pdf.*;
+import com.sun.javaws.exceptions.BadMimeTypeResponseException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.util.PDFTextStripper;
 
 public class PdfUtil {
 
 	public void pdfToWord() {
-
-	}
-
-	public static void main(String[] args) {
 		try {
 			String pdfFile = "D:/1.pdf";
 			PDDocument doc = PDDocument.load(new File(pdfFile));
@@ -42,7 +41,7 @@ public class PdfUtil {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * 根据模板和内容生成新的pdf
 	 * @param pdfTemplateData
@@ -145,5 +144,39 @@ public class PdfUtil {
 			} catch (Exception e) {
 			}
 		}
+	}
+
+
+	public static void genPdfTest() throws Exception {
+		String pdfTemplatePath = Constants.PDF_TEMPLATE_PATH + "req_con.pdf";
+		byte[] pdfTemplateData = FileUtil.getFile(pdfTemplatePath);
+
+		Properties properties = new Properties();
+		properties.setProperty("cert", "CN=Test");
+		properties.setProperty("businessCodeCn", "新办");
+		properties.setProperty("name", "张女士");
+		properties.setProperty("phone", "15712345678");
+		properties.setProperty("idType", "身份证");
+		properties.setProperty("idNum", "411328****");
+		properties.setProperty("other", "无");
+
+		properties.setProperty("ag_name", "张女士");
+		properties.setProperty("ag_sex", "女");
+		properties.setProperty("ag_idNum", "411328****");
+		properties.setProperty("ag_idType", "身份证");
+		properties.setProperty("ag_phone", "15712345678");
+		properties.setProperty("ag_telPhone", "0377-66666666");
+		properties.setProperty("ag_email", "867096367@qq.com");
+		properties.setProperty("ag_other", "无");
+
+		properties.setProperty("req_time", DateUtil.getDateTime());
+		properties.setProperty("remark", "无");
+
+		byte[] pdfData = genPdfByTemplate(pdfTemplateData, properties);
+		FileUtil.storeFile("F:/pdf/个人信息.pdf", pdfData);
+	}
+
+	public static void main(String[] args) throws Exception {
+		genPdfTest();
 	}
 }

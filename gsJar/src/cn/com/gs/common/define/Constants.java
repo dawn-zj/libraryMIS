@@ -22,6 +22,7 @@ public class Constants {
 	public static final String LOG_PATH = ROOT_PATH + "log/";
 	public static final String TMP_PATH = ROOT_PATH + "tmp/";
 	public static final String PDF_PATH = ROOT_PATH + "pdf/";
+	public static final String PDF_TEMPLATE_PATH = ROOT_PATH + "pdfTemplate/";
 
 	public static final int RSA_KEY_SIZE_1024 = 1024;
 
