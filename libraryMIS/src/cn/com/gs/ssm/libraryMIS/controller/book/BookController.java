@@ -1,12 +1,15 @@
 package cn.com.gs.ssm.libraryMIS.controller.book;
 
 import cn.com.gs.common.util.logger.LoggerUtil;
+import cn.com.gs.ssm.libraryMIS.util.CommonUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import cn.com.gs.ssm.libraryMIS.aop.LibraryLog;
 import cn.com.gs.ssm.libraryMIS.logger.Log4jTest;
@@ -14,11 +17,16 @@ import cn.com.gs.ssm.libraryMIS.model.Book;
 import cn.com.gs.ssm.libraryMIS.service.IBookService;
 import cn.com.gs.ssm.libraryMIS.util.Page;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+
 @Controller
 @RequestMapping("/book")
 public class BookController {
 	@Autowired
 	private IBookService bookService;
+	@Autowired
+	private HttpServletRequest request;
 	
 //	private static Logger logger = Logger.getLogger(Log4jTest.class);
 	
@@ -29,7 +37,8 @@ public class BookController {
 	@LibraryLog(optype = "selectBook")
 	public ModelAndView bookList(Page<Book> page, Book bk,ModelAndView mv){
 //		logger.error("查询图书");
-		LoggerUtil.debug("查询图书");
+		LoggerUtil.debugLog("查询图书");
+		LoggerUtil.errorLog("查询图书-测试错误日志");
 		page = bookService.searchBookByPage(page, bk);
 		mv.addObject("book",bk);
 		mv.addObject("page",page);
@@ -38,7 +47,7 @@ public class BookController {
 	}
 	
 	@RequestMapping("/{bookId}/toUpdateBook.do")
-	public String toUpdateBook(@PathVariable("bookId") String bookId,Model model){
+	public String toUpdateBook(@PathVariable("bookId") String bookId, Model model){
 		Book book = bookService.selectBookById(bookId);
 		model.addAttribute("book",book);
 		return "updateBook";
@@ -48,10 +57,32 @@ public class BookController {
  	public String toAddBook(){
 		return "book/bookAdd";
 	}
-	
-	
-	
-	
+
+	@RequestMapping("toEditBook")
+	public String toEditBook(String id){
+		Book book = bookService.selectBookById(id);
+		request.setAttribute("book", book);
+		return "book/bookEdit";
+	}
+
+	@RequestMapping("/insertBook.do")
+	@ResponseBody
+	public HashMap<String, Object> insertBook(Book bk){
+		bookService.insertBook(bk);
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap.put("success", true);
+		return resultMap;
+	}
+
+	@RequestMapping("/editBook.do")
+	@ResponseBody
+	public HashMap<String, Object> editBook(Book bk){
+		bookService.updateBook(bk);
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap.put("success", true);
+		return resultMap;
+	}
+
 /*	
 	@RequestMapping("/{pageIndex}/selectBook.do")//传当前页
 	@LibraryLog(optype = "selectBook")
@@ -145,23 +176,7 @@ public class BookController {
 		}
 	}
 	
-	@RequestMapping("/insertBook.do")
-	public ModelAndView insertBook(Book bk,ModelAndView mv){
-		bookService.insertBook(bk);
-		//new book 只是为了让book不为空
-		Book book = new Book();
-		book.getPage().setPageSize(CommonUtil.pageSize);;
-		selectBook(1, book, mv);
-		return mv;
-	}
+
 	
-	@RequestMapping("/updateBook.do")
-	public ModelAndView updateBook(Book bk,ModelAndView mv){
-		bookService.updateBook(bk);
-		//new book 只是为了让book不为空
-		Book book = new Book();
-		book.getPage().setPageSize(CommonUtil.pageSize);;
-		selectBook(1, book, mv);
-		return mv;
-	}*/
+	*/
 }

@@ -14,51 +14,52 @@
 <nav class="breadcrumb">
 	<i class="Hui-iconfont">&#xe67f;</i>首页
 	<span class="c-gray en">&gt;</span>图书管理 
-	<span class="c-gray en">&gt;</span>添加图书
+	<span class="c-gray en">&gt;</span>修改图书
 	<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a>
 </nav>
 <div class="page-container">
-	<form action="${ctx}/book/insertBook.do" method="post" class="form form-horizontal" id="addBookForm">
+	<form action="${ctx}/book/editBook.do" method="post" class="form form-horizontal" id="editBookForm">
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>图书编号：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" name="id" id="id">
+				<input type="text" class="input-text" name="id" id="id" value="${book.id}">
 			</div>
 		</div>
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>图书名称：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" name="name">
+				<input type="text" class="input-text" name="name" value="${book.name}">
 			</div>
 		</div>
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>图书作者：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" name="author">
+				<input type="text" class="input-text" name="author" value="${book.author}">
 			</div>
 		</div>
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>出版社：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" name="publish">
+				<input type="text" class="input-text" name="publish" value="${book.publish}">
 			</div>
 		</div>
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>出版时间：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" autocomplete="off" class="input-text Wdate" name="time" onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd HH:mm:ss'})" >
+				<input type="text" autocomplete="off" class="input-text Wdate" name="time" value="${book.time}"
+					   onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd HH:mm:ss'})">
 			</div>
 		</div>
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>价格：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" name="price">
+				<input type="text" class="input-text" name="price" value="${book.price}">
 			</div>
 		</div>
 
 		<div class="row cl">
 			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
-				<button id="addBookBtn" class="btn btn-primary radius" type="button"><i class="Hui-iconfont">&#xe632;</i> 提交</button>
+				<button id="editBookBtn" class="btn btn-primary radius" type="button"><i class="Hui-iconfont">&#xe632;</i> 修改</button>
 				<button id="back" onclick="javascript:window.location.replace('${ctx}/book/bookList.do');" class="btn btn-primary radius" type="button"><i class="Hui-iconfont">&#xe632;</i> 返回</button>
 			</div>
 		</div>
@@ -66,9 +67,9 @@
 </div>
 <script type="text/javascript">
 $(function () {
-	//添加
-	$("#addBookBtn").click(function() {
-		var form = $("#addBookForm");
+	//修改
+	$("#editBookBtn").click(function() {
+		var form = $("#editBookForm");
 		form.ajaxSubmit({
 			success: function (data) {
 				if (data.success){

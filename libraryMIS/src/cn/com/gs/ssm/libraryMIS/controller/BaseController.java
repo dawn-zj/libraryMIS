@@ -1,5 +1,6 @@
 package cn.com.gs.ssm.libraryMIS.controller;
 
+import cn.com.gs.common.util.FileUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -37,8 +38,6 @@ public class BaseController {
 	/**
 	 * 获取成功MAP
 	 * 
-	 * @param pageMsg
-	 * @param extMsg
 	 * @return
 	 */
 	protected HashMap<String, Object> getSuccMap() {
@@ -51,7 +50,6 @@ public class BaseController {
 	 * 获取成功MAP
 	 * 
 	 * @param pageMsg
-	 * @param extMsg
 	 * @return
 	 */
 	protected HashMap<String, Object> getSuccMap(String pageMsg) {
@@ -88,10 +86,8 @@ public class BaseController {
 	/**
 	 * 获取异常MAP
 	 * 
-	 * @param logMsg
-	 *            日志中记录信息
-	 * @param e
-	 *            异常
+	 * @param pageMsg
+	 *            异常信息
 	 * @return
 	 */
 	protected HashMap<String, Object> getErrMap(String pageMsg) {
@@ -131,8 +127,9 @@ public class BaseController {
 
 	/**
 	 * 下载文件
-	 * 
-	 * @param zipPath
+	 *
+	 * @param filePath
+	 * @param fileName
 	 * @param request
 	 * @param response
 	 */

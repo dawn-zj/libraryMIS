@@ -24,7 +24,7 @@
 				<a class="btn btn-primary radius" data-title="添加图书" data-href="${ctx }/book/toAddBook.do" onclick="Hui_admin_tab(this)" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i>添加图书</a>
 			</shiro:hasPermission>
 			<shiro:hasPermission name="book:toUpdate">
-				<a class="btn btn-primary radius" data-title="修改图书" data-href="${ctx }/book/toAddBook.do" onclick="Hui_admin_tab(this)" href="javascript:;">修改图书</a>
+				<button class="btn btn-primary radius" data-title="修改图书" id="editBookBtn">修改图书</button>
 			</shiro:hasPermission>
 			<shiro:hasPermission name="book:delete">
 				<a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> 
@@ -50,7 +50,7 @@
 			<tbody>
 				<c:forEach items="${page.result}" var="book">
 					<tr class="text-c" style="background-color: rgb(255, 255, 255);">
-						<td><input type="checkbox" id="sub_check" value="${book.id}"></td>
+						<td><input type="checkbox" id="sub_check" name="checkboxt" value="${book.id}"></td>
 						<td>${book.id}</td>
 						<td>${book.name}</td>
 						<td>${book.author}</td>
@@ -76,6 +76,27 @@
 			var param = "?name="+$("#name").val();
 			param = param + "&author="+$("#author").val();
 			window.location.replace("${ctx}/book/bookList.do" + param);
+		});
+
+		// 修改图书
+		$("#editBookBtn").click(function() {
+			var index = 0;
+			$("[name=checkboxt]:checkbox").each(
+				function() {
+					if (this.checked) {
+						if (index == 0) {
+							id = $(this).val();
+						}
+						index++;
+					}
+				});
+
+			if (index == 0 || index>1) {
+				layer.alert("请选择要修改的一条记录",{icon:0});
+				return;
+			} else {
+				window.location.replace("${ctx }/book/toEditBook.do?id="+id);
+			}
 		});
 	});
 </script>
