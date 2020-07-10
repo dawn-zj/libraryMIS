@@ -22,7 +22,7 @@
                 <div class="input username" id="username">
                     <label for="userName">用户名</label>
                     <span></span>
-                    <input type="text" id="account" name="account">
+                    <input type="text" id="account" name="account" autocomplete="off">
                 </div>
                 <div class="input psw" id="psw">
                     <label for="password">密&nbsp;&nbsp;&nbsp;&nbsp;码</label>
