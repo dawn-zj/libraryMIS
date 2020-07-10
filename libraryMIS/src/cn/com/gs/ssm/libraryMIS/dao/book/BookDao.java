@@ -14,17 +14,54 @@ import cn.com.gs.ssm.libraryMIS.model.Book;
  * 在spring里applicationContext.xml配置mapper扫描器
  * */
 public interface BookDao{
-	
-	public abstract void insertBook(Book bk);
-	
-	public abstract void deleteBook(String bookId);
-	public abstract int batchDeleteBooks(String bookIds);
-	
-	public abstract void updateBook(Book bk);
 
+	/**
+	 * 增
+	 * @param bk
+	 */
+	void insertBook(Book bk);
+
+	/**
+	 * 删
+	 * @param bookId
+	 */
+	void deleteBook(String bookId);
+
+	/**
+	 * 批量删
+	 * @param bookIds
+	 * @return
+	 */
+	int batchDeleteBooks(String bookIds);
+
+	/**
+	 * 改
+	 * @param bk
+	 */
+	void updateBook(Book bk);
+
+	/**
+	 * 根据id查
+	 * @param id
+	 * @return
+	 */
 	Book selectBookById(String id);
+
 	/*该方法有两个或以上的参数，一定要加@Param，不然mybatis识别不了*/
+	/**
+	 * 分页搜索
+	 * @param book
+	 * @param start
+	 * @param end
+	 * @return
+	 */
 	List<Book> searchBookByPage(@Param("book") Book book, @Param("start") int start, @Param("end") int end);
+
+	/**
+	 * 获取总条数
+	 * @param bk
+	 * @return
+	 */
 	int searchTotal(Book bk);
 	
 	

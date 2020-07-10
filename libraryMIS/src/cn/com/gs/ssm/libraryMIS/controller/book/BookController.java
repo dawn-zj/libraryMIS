@@ -28,17 +28,12 @@ public class BookController {
 	@Autowired
 	private HttpServletRequest request;
 	
-//	private static Logger logger = Logger.getLogger(Log4jTest.class);
-	
 	/**
 	 * 分页查询图书
 	 * */
 	@RequestMapping("bookList")//传当前页
 	@LibraryLog(optype = "selectBook")
 	public ModelAndView bookList(Page<Book> page, Book bk,ModelAndView mv){
-//		logger.error("查询图书");
-		LoggerUtil.debugLog("查询图书");
-		LoggerUtil.errorLog("查询图书-测试错误日志");
 		page = bookService.searchBookByPage(page, bk);
 		mv.addObject("book",bk);
 		mv.addObject("page",page);
