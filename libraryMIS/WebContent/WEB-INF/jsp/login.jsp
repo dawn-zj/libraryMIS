@@ -76,6 +76,15 @@
 		window.history.pushState('forward', null, 'login.jsp');
 		window.history.forward(1);
 	});
+
+	//用window的onload事件，窗体加载完毕的时候
+	window.onload = function () {
+		if (window.top.location.href != window.location.href) {
+			console.log(window.top.location.href);
+			console.log(window.location.href);
+			top.location.href = "${ctx}/sysUser/toLogin.do";
+		}
+	}
 </script>
 </body>
 </html>

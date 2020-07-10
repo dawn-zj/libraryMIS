@@ -9,7 +9,7 @@
 </head>
 <body>
 <script type="text/javascript">
-	parent.localtion.href="${ctx}/sysUser/toLogin.do";
+	window.top.localtion.href="${ctx}/sysUser/toLogin.do";
 </script>
 </body>
 </html>
