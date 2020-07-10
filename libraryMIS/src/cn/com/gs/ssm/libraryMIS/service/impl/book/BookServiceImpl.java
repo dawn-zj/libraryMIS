@@ -59,7 +59,9 @@ public class BookServiceImpl implements IBookService {
 		Integer total = bookDao.searchTotal(bk);
 		int start = page.getStart();
 		int end = page.getEnd();
-		List<Book> bookList = bookDao.searchBookByPage(bk, start, end);
+		//TODO 兼容各个数据库
+		int pageSize = page.getPageSize();
+		List<Book> bookList = bookDao.searchBookByPage(bk, start, pageSize);
 		page.setTotalNo(total);
 		page.setResult(bookList);
 		return page;

@@ -66,10 +66,27 @@
 				</c:forEach>
 			</tbody>
 		</table>
+		<div class="text-r" id="errorLogFilePage"></div>
 	</div>
 </div>
 
 <script type="text/javascript">
+	$(function(){
+		laypage({
+			cont : 'errorLogFilePage',
+			skip : true,//跳转页面选项
+			pages : '${page.totalPage}',
+			curr : function() {
+				var pageNo = '${page.pageNo}';
+				return pageNo ? pageNo : 1;
+			}(),
+			jump : function(e, first) {
+				if (!first) {
+					window.location.replace("${ctx }/book/bookList.do?pageNo=" + e.curr);
+				}
+			}
+		});
+	});
 	$(function(){
 		//搜索图书
 		$("#searchBook").click(function(){
