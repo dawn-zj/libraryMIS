@@ -66,14 +66,14 @@
 				</c:forEach>
 			</tbody>
 		</table>
-		<div class="text-r" id="errorLogFilePage"></div>
+		<div class="text-r" id="page"></div>
 	</div>
 </div>
 
 <script type="text/javascript">
 	$(function(){
 		laypage({
-			cont : 'errorLogFilePage',
+			cont : 'page',
 			skip : true,//跳转页面选项
 			pages : '${page.totalPage}',
 			curr : function() {

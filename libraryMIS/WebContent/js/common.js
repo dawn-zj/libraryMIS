@@ -29,8 +29,30 @@ $(function(){
 });
 
 //laypage分页
-function page(){
-	
+function page(cont,pages,pageNum,url,judge){
+	//分页
+	laypage({
+		cont : cont,
+		skip : true,//跳转页面选项
+		skin: '#0066CC',
+		pages : pages, //可以叫服务端把总页数放在某一个隐藏域，再获取。假设我们获取到的是18
+
+		curr : function() { //通过url获取当前页，也可以同上（pages）方式获取
+			var pageNo = pageNum; // 当前页(后台获取到的)
+			return pageNo ? pageNo : 1; // 返回当前页码值
+		}(),
+		jump : function(e, first) { //触发分页后的回调
+			if(!judge){//---judge--是用来判断某个div加载
+				if (!first) { //一定要加此判断，否则初始时会无限刷新
+					window.location.replace(url+e.curr);
+				}
+			}else{
+				if (!first) { //一定要加此判断，否则初始时会无限刷新
+					$(judge).load(url+ e.curr);
+				}
+			}
+		}
+	});
 }
 
 function showTab(tabId, url){
