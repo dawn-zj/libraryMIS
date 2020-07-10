@@ -23,7 +23,7 @@
 				</c:forEach>
 			</tbody>
 		</table>
-		<div class="text-r" id="page"></div>
+		<div class="text-r mt-20" id="page"></div>
 	</div>
 </div>
 
@@ -46,7 +46,7 @@
 			}(),
 			jump : function(e, first) {
 				if (!first) {
-					window.location.replace("${ctx }/log/viewFile.do?fileName=${fileName}&pageNo=" + e.curr);
+					$("#content").load("${ctx }/log/viewFile.do?fileName=${fileName}&pageNo=" + e.curr);
 				}
 			}
 		});

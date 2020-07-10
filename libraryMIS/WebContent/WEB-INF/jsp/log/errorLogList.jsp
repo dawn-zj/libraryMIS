@@ -2,8 +2,9 @@
 	pageEncoding="UTF-8" import="java.util.*"%>
 <%@ include file="../common/resource.jsp"%>
 <link rel="stylesheet" type="text/css" href="${ctx }/static/lib/laypage/1.2/skin/laypage.css" />
-<script type="text/javascript" src="${ctx }/static/lib/laypage/1.2/laypage.js"></script> 
+<script type="text/javascript" src="${ctx }/static/lib/laypage/1.2/laypage.js"></script>
 
+<div id="content">
 <nav class="breadcrumb">
 	<i class="Hui-iconfont">&#xe67f;</i>首页
 	<span class="c-gray en">&gt;</span>日志管理
@@ -37,10 +38,10 @@
 				</c:forEach>
 			</tbody>
 		</table>
-		<div class="text-r" id="errorLogFilePage"></div>
+		<div class="text-r mt-20" id="page"></div>
 	</div>
 </div>
-
+</div>
 <script type="text/javascript">
 	$(function(){
 		//===分页===
@@ -58,13 +59,13 @@
 			}(),
 			jump : function(e, first) {
 				if (!first) {
-					window.location.replace("${ctx }/log/errorLogList.do?pageNo=" + e.curr);
+					$("#content").load("${ctx }/log/errorLogList.do?pageNo=" + e.curr);
 				}
 			}
 		});
 	});
 	function viewLog(fileName){
-		window.location.replace("${ctx }/log/viewFile.do?fileName=" + fileName);
+		$("#content").load("${ctx }/log/viewFile.do?fileName=" + fileName);
 	}
 
 </script>
