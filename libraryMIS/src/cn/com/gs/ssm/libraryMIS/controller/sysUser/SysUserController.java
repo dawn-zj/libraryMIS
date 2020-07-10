@@ -4,6 +4,9 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import cn.com.gs.common.util.ConfigUtil;
+import cn.com.gs.common.util.date.DateUtil;
+import cn.com.gs.common.util.logger.LoggerUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
@@ -64,7 +67,6 @@ public class SysUserController {
 		 * 
 		 * */
 		
-		System.out.println("------loginController--------");
 		Subject subject = SecurityUtils.getSubject();
 		UsernamePasswordToken token = new UsernamePasswordToken(user.getAccount(),user.getPassword());
 		try {
@@ -75,7 +77,8 @@ public class SysUserController {
 				List<Menu> menuList = sysUserService.getMenuByRoleId(sysUser.getRoleId());
 				
 				//设置过期时间：无操作30分钟后过期
-				subject.getSession().setTimeout(1800000);//30分钟
+				Long timeout = ConfigUtil.getInstance().getTimeoutTime();
+				subject.getSession().setTimeout(timeout);//30分钟 = 30 * 60 * 1000
 				subject.getSession().setAttribute("sysUser", sysUser);
 				request.setAttribute("menuList", menuList);
 				return "common/main";
@@ -85,6 +88,7 @@ public class SysUserController {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			LoggerUtil.errorLog("登录失败", e);
 			request.setAttribute("message", "账号或密码不正确");
 			return "login";
 		}
