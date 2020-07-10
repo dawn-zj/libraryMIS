@@ -1,6 +1,8 @@
 package cn.com.gs.common.util;
 
 import java.math.BigInteger;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import cn.com.gs.common.define.Constants;
@@ -227,4 +229,21 @@ public class StringUtil {
 		return obj;
 	}
 
+	/**
+	 * 判断是否以某字符串开始
+	 * @param msg
+	 * @param msgPrefix
+	 * @return
+	 */
+	public static boolean startsWithAny(String msg, String... msgPrefix){
+		boolean isSlave = false;
+		List<String> suffix = Arrays.asList(msgPrefix);
+		for (int i = 0; i < msgPrefix.length; i++) {
+			if (msg.startsWith(msgPrefix[i])) {
+				isSlave = true;
+				break;
+			}
+		}
+		return isSlave;
+	}
 }
