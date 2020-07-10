@@ -162,8 +162,6 @@
 	<bean id="dataSourceAspectBean" class="cn.com.gs.ssm.libraryMIS.aop.DataSourceAspect">
 		<!-- 指定事务策略 -->
 		<property name="txAdvice" ref="dataSourceAdvice"/>
-		<!-- 指定slave方法的前缀（非必须） -->
-		<property name="slaveMethodStart" value="select,search,get"/>
 	</bean>
 	<aop:config>
 		<!-- 指向切面 -->
