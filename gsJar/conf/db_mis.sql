@@ -104,15 +104,15 @@ CREATE TABLE `gs_user` (
 -- ----------------------------
 -- Records of gs_book
 -- ----------------------------
-INSERT INTO `gs_book` VALUES ('1001', '1', '1', '简氏出版社', '1', '1.00');
-INSERT INTO `gs_book` VALUES ('1002', '2', '2', '2', '2', '2.00');
-INSERT INTO `gs_book` VALUES ('1003', '3', '3', '3', '3', '3.00');
-INSERT INTO `gs_book` VALUES ('1004', '4', '4', '4', '4', '4.00');
-INSERT INTO `gs_book` VALUES ('1005', '5', '5', '5', '5', '5.00');
-INSERT INTO `gs_book` VALUES ('1006', '6', '6', '6', '6', '6.00');
-INSERT INTO `gs_book` VALUES ('1007', '7', '7', '7', '7', '7.00');
-INSERT INTO `gs_book` VALUES ('1008', '8', '8', '8', '8', '8.00');
-INSERT INTO `gs_book` VALUES ('1009', '9', '9', '9', '9', '9.00');
+INSERT INTO `gs_book` VALUES ('1001', '1', '1', '简氏出版社', '2020-07-03 00:00:00', '1.00');
+INSERT INTO `gs_book` VALUES ('1002', '2', '2', '2', '2020-07-03 00:00:00', '2.00');
+INSERT INTO `gs_book` VALUES ('1003', '3', '3', '3', '2020-07-03 00:00:00', '3.00');
+INSERT INTO `gs_book` VALUES ('1004', '4', '4', '4', '2020-07-03 00:00:00', '4.00');
+INSERT INTO `gs_book` VALUES ('1005', '5', '5', '5', '2020-07-03 00:00:00', '5.00');
+INSERT INTO `gs_book` VALUES ('1006', '6', '6', '6', '2020-07-03 00:00:00', '6.00');
+INSERT INTO `gs_book` VALUES ('1007', '7', '7', '7', '2020-07-03 00:00:00', '7.00');
+INSERT INTO `gs_book` VALUES ('1008', '8', '8', '8', '2020-07-03 00:00:00', '8.00');
+INSERT INTO `gs_book` VALUES ('1009', '9', '9', '9', '2020-07-03 00:00:00', '9.00');
 
 -- ----------------------------
 -- Records of gs_button
@@ -128,25 +128,27 @@ INSERT INTO `gs_menu` VALUES ('100000', '用户管理', '#', '-1', 'Hui-iconfont
 INSERT INTO `gs_menu` VALUES ('110000', '图书管理', '#', '-1', 'Hui-iconfont-news', null, null, null, null);
 INSERT INTO `gs_menu` VALUES ('120000', '系统管理', '#', '-1', 'Hui-iconfont-tongji', null, null, null, null);
 INSERT INTO `gs_menu` VALUES ('130000', '工具管理', '#', '-1', 'Hui-iconfont-manage2', null, null, null, null);
+INSERT INTO `gs_menu` VALUES ('140000', '日志管理', '#', '-1', 'Hui-iconfont-manage2', null, null, null, null);
 
-
+--用户管理
 INSERT INTO `gs_menu` VALUES ('100100', '管理员管理', '/sysUser/sysUserList.do', '100000', null, null, null, null, null);
 INSERT INTO `gs_menu` VALUES ('100101', '管理员管理', '#', '100100', null, null, null, null, null);
 
 INSERT INTO `gs_menu` VALUES ('100200', '角色管理', '/role/roleList.do', '100000', null, null, null, null, null);
 INSERT INTO `gs_menu` VALUES ('100201', '角色管理', '#', '100200', null, null, null, null, null);
 
-
+--图书管理
 INSERT INTO `gs_menu` VALUES ('110100', '图书管理', '/book/bookList.do', '110000', null, null, null, null, null);
 INSERT INTO `gs_menu` VALUES ('110101', '图书管理', '#', '110100', null, null, null, null, null);
 
-
+--系统管理
 INSERT INTO `gs_menu` VALUES ('120100', '系统设置', '/system/systemManage.do', '120000', null, null, null, null, null);
 INSERT INTO `gs_menu` VALUES ('120101', '系统设置', '#', '120100', null, null, null, null, null);
 
 INSERT INTO `gs_menu` VALUES ('120200', '数据字典', '/system/dictionaryList.do', '120000', null, null, null, null, null);
 INSERT INTO `gs_menu` VALUES ('120201', '数据字典', '#', '120200', null, null, null, null, null);
 
+--工具管理
 INSERT INTO `gs_menu` VALUES ('130100', '在线二维码', '/tool/barcode/barcodeManage.do', '130000', null, null, null, null, null);
 INSERT INTO `gs_menu` VALUES ('130101', '在线二维码', '#', '130100', null, null, null, null, null);
 
@@ -159,6 +161,14 @@ INSERT INTO `gs_menu` VALUES ('130302', 'Base64解码', '/tool/base64/toBase64De
 
 INSERT INTO `gs_menu` VALUES ('130400', '拾色器', '/tool/colorpicker/toColorpicker.do', '130000', null, null, null, null, null);
 INSERT INTO `gs_menu` VALUES ('130401', '拾色器', '#', '130400', null, null, null, null, null);
+
+--日志管理
+INSERT INTO `gs_menu` VALUES ('140100', '错误日志', '/log/errorLogList.do', '140000', null, null, null, null, null);
+INSERT INTO `gs_menu` VALUES ('140101', '错误日志', '#', '140100', null, null, null, null, null);
+
+INSERT INTO `gs_menu` VALUES ('140200', '调试日志', '/log/debugLogList.do', '140000', null, null, null, null, null);
+INSERT INTO `gs_menu` VALUES ('140201', '调试日志', '#', '140200', null, null, null, null, null);
+
 
 -- ----------------------------
 -- Records of gs_role
