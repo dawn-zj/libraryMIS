@@ -22,10 +22,10 @@
 		<div class="cl pd-5 bg-1 bk-gray mt-20">
 			<span class="l">
 				<shiro:hasPermission name="book:toAdd">
-					<a class="btn btn-primary radius" data-title="添加图书" data-href="${ctx }/book/toAddBook.do" onclick="Hui_admin_tab(this)" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i>添加图书</a>
+					<a class="btn btn-primary radius" href="javascript:$('#content').load('${ctx }/book/toAddBook.do')"><i class="Hui-iconfont">&#xe600;</i>添加图书</a>
 				</shiro:hasPermission>
 				<shiro:hasPermission name="book:toUpdate">
-					<button class="btn btn-primary radius" data-title="修改图书" id="editBookBtn">修改图书</button>
+					<button class="btn btn-primary radius" id="editBookBtn">修改图书</button>
 				</shiro:hasPermission>
 				<shiro:hasPermission name="book:delete">
 					<a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
@@ -60,7 +60,7 @@
 							<td>${book.price}</td>
 							<td>
 								<a style="text-decoration:none" href="${ctx }/book/${book.id}/deleteBook.do" title="删除"><i class="Hui-iconfont">&#xe6e2;</i></a>
-								<a style="text-decoration:none" class="ml-5" href="${ctx }/book/${book.id}/toUpdateBook.do" title="编辑"><i class="Hui-iconfont">&#xe6df;</i></a>
+								<a style="text-decoration:none" class="ml-5" href="javascript:$('#content').load('${ctx }/book/toEditBook.do?id=${book.id}')" title="编辑"><i class="Hui-iconfont">&#xe6df;</i></a>
 								<a style="text-decoration:none" class="ml-5" href="${ctx }/cart/${book.id}/addCart.do" title="加购">加购</a>
 							</td>
 						</tr>
@@ -113,7 +113,7 @@
 				layer.alert("请选择要修改的一条记录",{icon:0});
 				return;
 			} else {
-				window.location.replace("${ctx }/book/toEditBook.do?id="+id);
+				$("#content").load("${ctx }/book/toEditBook.do?id="+id);
 			}
 		});
 	});

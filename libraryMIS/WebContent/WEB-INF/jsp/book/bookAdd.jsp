@@ -11,58 +11,60 @@
 <script type="text/javascript" src="${ctx }/static/lib/ueditor/1.4.3/ueditor.all.min.js"> </script>
 <script type="text/javascript" src="${ctx }/static/lib/ueditor/1.4.3/lang/zh-cn/zh-cn.js"></script>
 
-<nav class="breadcrumb">
-	<i class="Hui-iconfont">&#xe67f;</i>首页
-	<span class="c-gray en">&gt;</span>图书管理 
-	<span class="c-gray en">&gt;</span>添加图书
-	<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a>
-</nav>
-<div class="page-container">
-	<form action="${ctx}/book/insertBook.do" method="post" class="form form-horizontal" id="addBookForm">
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>图书编号：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" name="id" id="id">
+<div id="content">
+	<nav class="breadcrumb">
+		<i class="Hui-iconfont">&#xe67f;</i>首页
+		<span class="c-gray en">&gt;</span>图书管理
+		<span class="c-gray en">&gt;</span>添加图书
+		<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a>
+	</nav>
+	<div class="page-container">
+		<form action="${ctx}/book/insertBook.do" method="post" class="form form-horizontal" id="addBookForm">
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>图书编号：</label>
+				<div class="formControls col-xs-8 col-sm-9">
+					<input type="text" class="input-text" name="id" id="id">
+				</div>
 			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>图书名称：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" name="name">
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>图书名称：</label>
+				<div class="formControls col-xs-8 col-sm-9">
+					<input type="text" class="input-text" name="name">
+				</div>
 			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>图书作者：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" name="author">
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>图书作者：</label>
+				<div class="formControls col-xs-8 col-sm-9">
+					<input type="text" class="input-text" name="author">
+				</div>
 			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>出版社：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" name="publish">
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>出版社：</label>
+				<div class="formControls col-xs-8 col-sm-9">
+					<input type="text" class="input-text" name="publish">
+				</div>
 			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>出版时间：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" autocomplete="off" class="input-text Wdate" name="time" onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd HH:mm:ss'})" >
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>出版时间：</label>
+				<div class="formControls col-xs-8 col-sm-9">
+					<input type="text" autocomplete="off" class="input-text Wdate" name="time" onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd HH:mm:ss'})" >
+				</div>
 			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>价格：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" name="price">
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>价格：</label>
+				<div class="formControls col-xs-8 col-sm-9">
+					<input type="text" class="input-text" name="price">
+				</div>
 			</div>
-		</div>
 
-		<div class="row cl">
-			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
-				<button id="addBookBtn" class="btn btn-primary radius" type="button"><i class="Hui-iconfont">&#xe632;</i> 提交</button>
-				<button id="back" onclick="javascript:window.location.replace('${ctx}/book/bookList.do');" class="btn btn-primary radius" type="button"><i class="Hui-iconfont">&#xe632;</i> 返回</button>
+			<div class="row cl">
+				<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+					<button id="addBookBtn" class="btn btn-primary radius" type="button"><i class="Hui-iconfont">&#xe632;</i> 提交</button>
+					<button id="back" onclick="javascript:$('#content').load('${ctx}/book/bookList.do');" class="btn btn-primary radius" type="button"><i class="Hui-iconfont">&#xe632;</i> 返回</button>
+				</div>
 			</div>
-		</div>
-	</form>
+		</form>
+	</div>
 </div>
 <script type="text/javascript">
 $(function () {
@@ -72,7 +74,7 @@ $(function () {
 		form.ajaxSubmit({
 			success: function (data) {
 				if (data.success){
-					location.replace("${ctx}/book/bookList.do");
+					$("#content").load("${ctx}/book/bookList.do");
 				}
 			},
 			error : function() {
