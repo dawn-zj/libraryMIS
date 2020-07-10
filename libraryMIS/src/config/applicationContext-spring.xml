@@ -25,10 +25,10 @@
 
 	<!-- 数据源配置 (myBatis和Spring共用) -->
 	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-		<property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
-		<property name="url" value="jdbc:mysql://localhost:3306/db_mis"></property>
-		<property name="username" value="root"></property>
-		<property name="password" value="root"></property>
+		<property name="driverClassName" value="${jdbc.master.driverClassName}"></property>
+		<property name="url" value="${jdbc.master.url}"></property>
+		<property name="username" value="${jdbc.master.username}"></property>
+		<property name="password" value="${jdbc.master.password}"></property>
 	</bean>
 
 	<!-- myBatis测试时的利用sqlSessionFactory加载配置文件 -->
