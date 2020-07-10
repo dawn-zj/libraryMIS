@@ -24,11 +24,54 @@
 	</bean>
 
 	<!-- 数据源配置 (myBatis和Spring共用) -->
-	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+	<!--druid写数据源-->
+	<bean id="masterDataSource" class="com.alibaba.druid.pool.DruidDataSource">
 		<property name="driverClassName" value="${jdbc.master.driverClassName}"></property>
 		<property name="url" value="${jdbc.master.url}"></property>
 		<property name="username" value="${jdbc.master.username}"></property>
 		<property name="password" value="${jdbc.master.password}"></property>
+		<!-- 初始化连接大小 -->
+		<property name="initialSize" value="0" />
+		<!-- 连接池最大使用连接数量 -->
+		<property name="maxActive" value="20" />
+		<!-- 连接池最小空闲 -->
+		<property name="minIdle" value="0" />
+		<!-- 连接池最大空闲 -->
+		<property name="maxIdle" value="20" />
+		<!-- 获取连接最大等待时间 -->
+		<property name="maxWait" value="60000" />
+	</bean>
+
+	<!--druid读数据源01-->
+	<bean id="slave01DataSource" class="com.alibaba.druid.pool.DruidDataSource">
+		<property name="driverClassName" value="${jdbc.slave01.driverClassName}"></property>
+		<property name="url" value="${jdbc.slave01.url}"></property>
+		<property name="username" value="${jdbc.slave01.username}"></property>
+		<property name="password" value="${jdbc.slave01.password}"></property>
+		<!-- 初始化连接大小 -->
+		<property name="initialSize" value="0" />
+		<!-- 连接池最大使用连接数量 -->
+		<property name="maxActive" value="20" />
+		<!-- 连接池最小空闲 -->
+		<property name="minIdle" value="0" />
+		<!-- 连接池最大空闲 -->
+		<property name="maxIdle" value="20" />
+		<!-- 获取连接最大等待时间 -->
+		<property name="maxWait" value="60000" />
+	</bean>
+
+	<!--自定义的动态切换数据源-->
+	<bean id="dataSource" class="cn.com.gs.ssm.libraryMIS.dataSource.DynamicDataSource">
+		<!-- 设置多个数据源 -->
+		<property name="targetDataSources">
+			<map key-type="java.lang.String">
+				<!-- 这个key需要和程序中的key一致 -->
+				<entry key="master" value-ref="masterDataSource"/>
+				<entry key="slave" value-ref="slave01DataSource"/>
+			</map>
+		</property>
+		<!-- 设置默认的数据源，这里默认走写库 -->
+		<property name="defaultTargetDataSource" ref="masterDataSource"></property>
 	</bean>
 
 	<!-- myBatis测试时的利用sqlSessionFactory加载配置文件 -->
@@ -71,6 +114,25 @@
 		</tx:attributes>
 	</tx:advice>
 
+
+	<!-- 读写分离：定义事务策略 -->
+	<tx:advice id="dataSourceAdvice" transaction-manager="txManager">
+		<tx:attributes>
+			<!--定义查询方法都是只读的 -->
+			<tx:method name="select*" read-only="true" />
+			<tx:method name="search*" read-only="true" />
+			<tx:method name="get*" read-only="true" />
+
+			<!-- 主库执行操作，事务传播行为定义为默认行为 -->
+			<tx:method name="save*" propagation="REQUIRED" />
+			<tx:method name="update*" propagation="REQUIRED" />
+			<tx:method name="delete*" propagation="REQUIRED" />
+
+			<!--其他方法使用默认事务策略 -->
+			<tx:method name="*" />
+		</tx:attributes>
+	</tx:advice>
+
 	<!-- 注入切面 ，日志执行的方法-->
 	<!-- 注入切点，使用注解注入 -->
 	<bean id="logAspectBean" class="cn.com.gs.ssm.libraryMIS.aop.LogAspect" />
@@ -95,4 +157,22 @@
 			</props>
 		</property>
 	</bean>
+
+	<!--dataSource切面-->
+	<bean id="dataSourceAspectBean" class="cn.com.gs.ssm.libraryMIS.aop.DataSourceAspect">
+		<!-- 指定事务策略 -->
+		<property name="txAdvice" ref="dataSourceAdvice"/>
+		<!-- 指定slave方法的前缀（非必须） -->
+		<property name="slaveMethodStart" value="select,search,get"/>
+	</bean>
+	<aop:config>
+		<!-- 指向切面 -->
+		<aop:aspect id="dataSourceAspect" ref="dataSourceAspectBean">
+			<!-- 切入点表达式 -->
+			<aop:pointcut id="dataSourcePointcut" expression="execution(* cn.com.gs.ssm.libraryMIS.service.*.*(..))"/>
+
+			<!-- 在切入点周围要执行的方法-->
+			<aop:before pointcut-ref="dataSourcePointcut" method="before"/>
+		</aop:aspect>
+	</aop:config>
 </beans>
