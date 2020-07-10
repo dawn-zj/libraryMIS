@@ -25,24 +25,6 @@ public class DataSourceAspect {
 
 	private static final String[] defaultSlaveMethodStart = new String[]{ "select", "search", "get" };
 
-	private String[] slaveMethodStart;
-
-	/**
-	 * 用户指定slave的方法名前缀
-	 * @param slaveMethodStart
-	 */
-	public void setSlaveMethodStart(String[] slaveMethodStart) {
-		this.slaveMethodStart = slaveMethodStart;
-	}
-
-	public String[] getSlaveMethodStart() {
-		if(this.slaveMethodStart == null){
-			// 没有指定，使用默认
-			return defaultSlaveMethodStart;
-		}
-		return slaveMethodStart;
-	}
-
 	/**
 	 * 读取事务管理中的策略
 	 *
@@ -89,7 +71,12 @@ public class DataSourceAspect {
 
 		if (slaveMethodPattern.isEmpty()) {
 			// 当前Spring容器中没有配置事务策略，采用方法名匹配方式
-			isSlave = isSlave(methodName);
+			for (String mappedName : defaultSlaveMethodStart) {
+				if (isMatch(methodName, mappedName)) {
+					isSlave = true;
+					break;
+				}
+			}
 		}else{
 			// 使用策略规则匹配
 			for (String mappedName : slaveMethodPattern) {
@@ -110,17 +97,6 @@ public class DataSourceAspect {
 			LoggerUtil.debugLog(methodName + "----写库");
 		}
 
-	}
-
-	/**
-	 * 判断是否为读操作
-	 *
-	 * @param methodName
-	 * @return
-	 */
-	private Boolean isSlave(String methodName) {
-		// 方法名以query、find、get开头的方法名走从库
-		return StringUtil.startsWithAny(methodName, "query", "find", "get");
 	}
 
 	/**
