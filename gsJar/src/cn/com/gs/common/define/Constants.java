@@ -8,6 +8,7 @@ public class Constants {
 	public static final String SPLIT_2 = ";"; // 分割符2
 	public static final String SPLIT_DIR = "/"; // 目录分割符
 	public static final String SPOT = ".";
+	public static final String DEFAULT_STRING = "";
 
 	public static final String PHOTO_SUFFIX = ".png"; // 图片后缀
 	public static final String PDF_SUFFIX = ".pdf"; // pdf后缀

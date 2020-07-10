@@ -8,7 +8,7 @@
 	<nav class="breadcrumb">
 		<i class="Hui-iconfont">&#xe67f;</i>首页
 		<span class="c-gray en">&gt;</span>日志管理
-		<span class="c-gray en">&gt;</span>错误日志
+		<span class="c-gray en">&gt;</span>调试日志
 		<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a>
 	</nav>
 
@@ -43,10 +43,6 @@
 	</div>
 </div>
 <script type="text/javascript">
-	$(function(){
-		//===分页===
-		<%--page('errorLogFilePage', '${page.totalPage}', '${page.pageNo}',"${ctx }/log/errorLogList.do?pageNo=");--%>
-	});
 
 	$(function(){
 		laypage({

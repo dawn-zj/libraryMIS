@@ -44,7 +44,8 @@ public class DynamicDataSourceHolder {
 	 * 标记读库
 	 */
 	public static void markSlave(){
-		putDataSourceKey(SLAVE);
+//		putDataSourceKey(SLAVE);
+		putDataSourceKey(MASTER);
 	}
 
 

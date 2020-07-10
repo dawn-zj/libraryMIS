@@ -27,30 +27,18 @@ public class LogController extends BaseController{
 	@RequestMapping("/errorLogList")
 	public String errorLogList(Page<OperateLogVO> page){
 		File[] fs = LoggerFileUtil.logFile("error");
-		int total = fs.length;
-		int start = page.getStart();
-		int end = page.getEnd();
-		List<OperateLogVO> list = new ArrayList<OperateLogVO>();
-		for (int i = 1; i <= fs.length; i++) {
-			File f = fs[i - 1];
-			if (f.isFile() && i >= start && i <= end) {
-				OperateLogVO log = new OperateLogVO();
-				log.setFileName(f.getName());
-				log.setFilePath(f.getAbsolutePath());
-				log.setFileSize(f.length() / 1024);
-				log.setFileTime(f.lastModified());
-				list.add(log);
-			}
-		}
-		page.setTotalNo(total);
-		page.setResult(list);
 
+		page = logList(fs, page);
 		request.setAttribute("page", page);
 		return "log/errorLogList";
 	}
 
 	@RequestMapping("/debugLogList")
-	public String debugLogList(){
+	public String debugLogList(Page<OperateLogVO> page){
+		File[] fs = LoggerFileUtil.logFile("debug");
+
+		page = logList(fs, page);
+		request.setAttribute("page", page);
 		return "log/debugLogList";
 	}
 
@@ -106,5 +94,27 @@ public class LogController extends BaseController{
 
 		request.setAttribute("page", page);
 		return "log/viewFile";
+	}
+
+	private Page<OperateLogVO> logList(File[] fs, Page<OperateLogVO> page){
+		int total = fs.length;
+		int start = page.getStart();
+		int end = page.getEnd();
+		List<OperateLogVO> list = new ArrayList<OperateLogVO>();
+		for (int i = 1; i <= fs.length; i++) {
+			File f = fs[i - 1];
+			if (f.isFile() && i >= start && i <= end) {
+				OperateLogVO log = new OperateLogVO();
+				log.setFileName(f.getName());
+				log.setFilePath(f.getAbsolutePath());
+				log.setFileSize(f.length() / 1024);
+				log.setFileTime(f.lastModified());
+				list.add(log);
+			}
+		}
+		page.setTotalNo(total);
+		page.setResult(list);
+
+		return page;
 	}
 }
