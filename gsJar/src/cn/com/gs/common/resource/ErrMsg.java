@@ -11,6 +11,9 @@ public class ErrMsg {
 		container.put(ErrCode.GEN_PHOTO_ERROR, "生成图片错误");
 
 		container.put(ErrCode.PAGE_NUM_OVER_LIMIT_IN_PDF, "页码超出PDF文件范围");
+
+		container.put(ErrCode.LOAD_CONF_ERROR, "加载配置文件错误");
+		container.put(ErrCode.RELOAD_CONF_ERROR, "重新加载配置文件错误");
 	}
 
 	public static String getErrMsg(int errorNum) {
