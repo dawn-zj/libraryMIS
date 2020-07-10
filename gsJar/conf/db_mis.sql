@@ -24,7 +24,7 @@ CREATE TABLE `gs_book` (
   `name` varchar(128) DEFAULT NULL,
   `author` varchar(64) DEFAULT NULL,
   `publish` varchar(64) DEFAULT NULL,
-  `time` varchar(64) DEFAULT NULL,
+  `time` datetime DEFAULT NULL,
   `price` double(64,2) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1010 DEFAULT CHARSET=utf8;
