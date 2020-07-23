@@ -4,6 +4,7 @@ import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import cn.com.gs.common.define.Constants;
 import cn.com.gs.common.exception.NetGSRuntimeException;
@@ -245,5 +246,19 @@ public class StringUtil {
 			}
 		}
 		return isSlave;
+	}
+
+	/**
+	 * 生成指定位数的纯数字随机数
+	 * @param len
+	 * @return
+	 */
+	public static String genDigitRandom(int len) {
+		Random r = new Random();
+		StringBuilder rs = new StringBuilder();
+		for(int i = 0; i < len; i++) {
+			rs.append(r.nextInt(10));
+		}
+		return rs.toString();
 	}
 }
