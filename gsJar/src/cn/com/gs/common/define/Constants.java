@@ -25,6 +25,8 @@ public class Constants {
 	public static final String PDF_PATH = ROOT_PATH + "pdf/";
 	public static final String PDF_TEMPLATE_PATH = ROOT_PATH + "pdfTemplate/";
 
+	public static final String NATIVELIB_PATH = "appserver/nativelib";
+
 	public static final int RSA_KEY_SIZE_1024 = 1024;
 
 	//日志类型
