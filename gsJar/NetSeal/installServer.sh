@@ -100,6 +100,6 @@ cp -r stamp "$NETSEALHOME"/
 echo " copy watchdog ..."
 cp -r watchdog "$NETSEALHOME"/
 
-cd watchdog_X10X11_patch
+cd watchdog
 ./setup.sh
 

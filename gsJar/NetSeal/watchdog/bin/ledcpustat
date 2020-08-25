@@ -1,3 +1,0 @@
-top -b -n 2 -d 0 |grep 'Cpu(s)'|tail -1|awk '{print $2}'|awk -F% '{print $1}'
-#top -b -c -n 2|head -3|tail -1|awk '{print $2}'|awk -F% '{print $1}'
-#echo '9'

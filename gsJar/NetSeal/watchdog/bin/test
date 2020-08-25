@@ -1,8 +1,0 @@
-result=`sensors w83793-*` 
-if [ "" = "$result" ]
-then
-	echo 'no result'
-else
-	echo $result > sensors.data 
-	cat sensors.data
-fi

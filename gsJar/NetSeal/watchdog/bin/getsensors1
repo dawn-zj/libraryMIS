@@ -1,2 +1,0 @@
-sensors w83627dhg-* | sed "s/Case Fan/fan1/g" | sed "s/fan4/fan2/g" | sed "s/fan5/fan3/g" |  grep -v " V " | sed "s/+//g" | awk '{ print $1" "$2" "$3 }' | sed "s/RPM//g" 2>/dev/null
-
