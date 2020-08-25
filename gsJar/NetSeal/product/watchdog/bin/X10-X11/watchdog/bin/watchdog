@@ -1,0 +1,26 @@
+export LANG=zh_CN.GBK
+path=`pwd`
+cd ..
+
+if [ $1 = "start" ]
+then
+	line=`ps -ef --cols 2000 | grep watchdog.Startup`
+	num=`echo $line | grep start | wc -l`
+	if [ $num -eq 1 ]
+	then
+		echo "WatchDog already started"
+		exit 1
+	fi
+fi
+
+LD_LIBRARY_PATH=./nativelib:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH
+if [ $1 = "start" ]
+then
+	nohup ../jdk1.8.0_121/bin/java -Xms32M -Xmx128M -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=9000 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -classpath lib/watchdog.jar:lib/ISFJ_v2_0_1_127_3_BAISC_JDK14.jar:lib/utils.jar:classes:lib/log4j-1.2.9.jar cn.com.infosec.watchdog.Startup "$1" "$2" >>nohup.out 2>>nohup.out &
+	exit
+else
+	../jdk1.8.0_121/bin/java -Xms32M -Xmx128M -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=9000 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -classpath lib/watchdog.jar:lib/ISFJ_v2_0_1_127_3_BAISC_JDK14.jar:lib/utils.jar:classes:lib/log4j-1.2.9.jar cn.com.infosec.watchdog.Startup "$1" "$2" 
+fi	
+
+cd $path
