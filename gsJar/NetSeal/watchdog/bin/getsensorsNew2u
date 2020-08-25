@@ -1,0 +1,2 @@
+sensors w83795adg-* coretemp-* | sed "s/Core [0-9]*/CPU Temp/g" | sed "s/fan7/CPU fan/g" | sed "s/fan8/CPU fan/g" | grep -v " V " | sed "s/+//g" | awk '{ print $1" "$2" "$3 }' | sed "s/RPM//g" 2>/dev/null
+

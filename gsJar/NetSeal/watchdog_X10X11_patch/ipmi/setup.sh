@@ -1,0 +1,1 @@
+./setuprpm.sh

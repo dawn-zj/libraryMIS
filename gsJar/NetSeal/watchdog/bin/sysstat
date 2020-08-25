@@ -1,0 +1,6 @@
+echo "-----------------------------SYSTEM STATUS-------------------------------"
+linenum=`top -b -n1 | cat -n | sed -n "/[0-9]\t$/p" | sed "s/ //g" | sed "s/\t//g" | head -n1`
+linenum=`expr $linenum - 1`
+top -b -n1 | head -n$linenum
+df -h
+echo "-----------------------------SYSTEM STATUS-------------------------------"

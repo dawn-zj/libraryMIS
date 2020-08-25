@@ -1,0 +1,3 @@
+pid=`ps -ef --cols 2000 | grep watchdog.Startup | grep -v grep | awk '{ print $2 }'`
+echo "Kill \"$pid\""
+kill -9 $pid

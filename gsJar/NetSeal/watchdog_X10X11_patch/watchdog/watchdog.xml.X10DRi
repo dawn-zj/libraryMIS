@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="ISO8859-1"?>
+<DogConf>
+	<ReloadTime>600</ReloadTime>
+	<LogFile>logs/watchdog.log</LogFile>
+	<LogTime>60</LogTime>
+	<SYSStatCMD>bin/sysstat</SYSStatCMD>
+	<CPUStatCMD>bin/cpustat</CPUStatCMD>
+	<MEMStatCMD>bin/memstat</MEMStatCMD>
+	<HDStatCMD>bin/hdstat</HDStatCMD>
+	<NetStatCMD>bin/netstat</NetStatCMD>
+	<ThreadCountCMD>bin/threadcount</ThreadCountCMD>
+	<PSCMD>ps -ef --cols 2000</PSCMD>
+	<HARDWARECMD>bin/gethardinfo</HARDWARECMD>
+        <LEDCPUCMD>bin/getcpu</LEDCPUCMD>
+	<Led>
+          <RunLed>
+            <Region min="0" max="30" brightTime="50" darkTime="2000"/>
+            <Region min="30" max="60" brightTime="50" darkTime="500"/>
+            <Region min="60" max="90" brightTime="50" darkTime="20"/>
+            <Region min="90" max="100" brightTime="-1" darkTime="0"/>
+          </RunLed>
+          <LEDSENSORSCMD>bin/getsensors</LEDSENSORSCMD>
+          <FaultLed fan1MinRPM="720" fan2MinRPM="720" fan3MinRPM="720" cpuFanMinRPM="720" cpuMaxTemp="75" ischeck="true"/>
+    	</Led>
+	<Service>
+		<FeatureStr>init</FeatureStr>
+		<ServiceLog>logs/watchdog.log</ServiceLog>
+		<ShutdownCMD>bin/null</ShutdownCMD>
+		<StartupCMD>bin/null</StartupCMD>
+		<TestTime>30</TestTime>
+		<AutoRestart>off</AutoRestart>
+		<StartWait>60</StartWait>
+	</Service>
+</DogConf>

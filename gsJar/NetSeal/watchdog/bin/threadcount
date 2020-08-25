@@ -1,0 +1,1 @@
+cat /proc/$1/status | grep Threads | awk '{ print $2 }'
