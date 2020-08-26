@@ -28,9 +28,12 @@ public class BookServiceImpl implements IBookService {
 	}
 
 	@Override
-	public Book selectBookById(String id) {
-		return (Book) bookDao.selectBookById(id);
-
+	public Book getBookById(String id) {
+		return (Book) bookDao.getBookById(id);
+	}
+	@Override
+	public List<Book> getBook() {
+		return (List<Book>)bookDao.getBook();
 	}
 
 	@Override

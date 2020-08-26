@@ -1,8 +1,13 @@
 package cn.com.gs.ssm.libraryMIS.controller.book;
 
+import cn.com.gs.common.define.Constants;
+import cn.com.gs.common.util.date.DateUtil;
 import cn.com.gs.common.util.logger.LoggerUtil;
 import cn.com.gs.ssm.libraryMIS.util.CommonUtil;
+import cn.com.gs.ssm.libraryMIS.util.ExportUtil;
+import com.sun.org.apache.xalan.internal.xsltc.compiler.Template;
 import org.apache.log4j.Logger;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,7 +23,12 @@ import cn.com.gs.ssm.libraryMIS.service.IBookService;
 import cn.com.gs.ssm.libraryMIS.util.Page;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/book")
@@ -43,7 +53,7 @@ public class BookController {
 	
 	@RequestMapping("/{bookId}/toUpdateBook.do")
 	public String toUpdateBook(@PathVariable("bookId") String bookId, Model model){
-		Book book = bookService.selectBookById(bookId);
+		Book book = bookService.getBookById(bookId);
 		model.addAttribute("book",book);
 		return "updateBook";
 	}
@@ -55,7 +65,7 @@ public class BookController {
 
 	@RequestMapping("toEditBook")
 	public String toEditBook(String id){
-		Book book = bookService.selectBookById(id);
+		Book book = bookService.getBookById(id);
 		request.setAttribute("book", book);
 		return "book/bookEdit";
 	}
@@ -76,6 +86,36 @@ public class BookController {
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap.put("success", true);
 		return resultMap;
+	}
+
+	/**
+	 * 导出所选印模
+	 * @author zhangjuan
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/exportAllToExcel")
+	public void exportTemplateExcel(HttpServletResponse response){
+		List<Book> bookList = bookService.getBook();
+
+		String thss[] = new String[]{"名称","作者","价格","出版社"};
+		Map<Integer, String> map = new HashMap<Integer, String>();
+		for(int i = 0; i < thss.length; i++){
+			map.put(i, thss[i]);
+		}
+		HSSFWorkbook workBook = ExportUtil.exportBookToExcel(bookList, map);
+		String fileName = "OperatorBookInfo_" + DateUtil.getTimeStamp() + ".xls";
+		response.setHeader("Content-disposition", "attachment;filename=" + fileName);
+		response.setContentType("application/vnd.ms-excel");
+		OutputStream o;
+		try {
+			o = response.getOutputStream();
+			workBook.write(o);
+			workBook.close();
+			o.close();
+		} catch (IOException e) {
+			LoggerUtil.errorLog(e.getMessage(), e);
+		}
+
 	}
 
 /*	

@@ -52,8 +52,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<!--limit 0,5-->
 		
 	</select>
-	<select id="selectBookById" parameterType="string" resultType="book">
+	<select id="getBookById" parameterType="string" resultType="book">
 		select * from gs_book where id=#{id}
+	</select>
+	<select id="getBook" resultType="book">
+		select * from gs_book
 	</select>
 	
 	

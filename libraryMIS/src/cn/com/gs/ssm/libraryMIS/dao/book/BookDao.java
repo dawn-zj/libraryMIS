@@ -45,7 +45,14 @@ public interface BookDao{
 	 * @param id
 	 * @return
 	 */
-	Book selectBookById(String id);
+	Book getBookById(String id);
+
+	/**
+	 * 查询所有
+	 *
+	 * @return
+	 */
+	List<Book> getBook();
 
 	/*该方法有两个或以上的参数，一定要加@Param，不然mybatis识别不了*/
 	/**

@@ -3,6 +3,8 @@ package cn.com.gs.ssm.libraryMIS.service;
 import cn.com.gs.ssm.libraryMIS.model.Book;
 import cn.com.gs.ssm.libraryMIS.util.Page;
 
+import java.util.List;
+
 public interface IBookService {
 
 	/**
@@ -38,7 +40,14 @@ public interface IBookService {
 	 * @param id
 	 * @return
 	 */
-	Book selectBookById(String id);
+	Book getBookById(String id);
+
+	/**
+	 * 查询所有
+	 *
+	 * @return
+	 */
+	List<Book> getBook();
 
 	/**
 	 * 分页查询图书
