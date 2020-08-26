@@ -30,6 +30,7 @@
 				<shiro:hasPermission name="book:delete">
 					<a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
 				</shiro:hasPermission>
+				<a href="javascript:;" onclick="exportAll()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 导出Excel</a>
 			</span>
 			<span class="r">共有数据：<strong>54</strong> 条</span>
 		</div>
@@ -116,5 +117,11 @@
 				$("#content").load("${ctx }/book/toEditBook.do?id="+id);
 			}
 		});
+
 	});
+
+	function exportAll(){
+		var url = "${ctx}/book/exportAllToExcel.do?";
+		window.location.href = url;
+	}
 </script>
