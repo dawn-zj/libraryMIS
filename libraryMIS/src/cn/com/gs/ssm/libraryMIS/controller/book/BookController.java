@@ -89,7 +89,7 @@ public class BookController {
 	}
 
 	/**
-	 * 导出所选印模
+	 * 导出所有图书
 	 * @author zhangjuan
 	 */
 	@ResponseBody
@@ -103,7 +103,7 @@ public class BookController {
 			map.put(i, thss[i]);
 		}
 		HSSFWorkbook workBook = ExportUtil.exportBookToExcel(bookList, map);
-		String fileName = "OperatorBookInfo_" + DateUtil.getTimeStamp() + ".xls";
+		String fileName = "bookInfo_" + DateUtil.getTimeStamp() + ".xls";
 		response.setHeader("Content-disposition", "attachment;filename=" + fileName);
 		response.setContentType("application/vnd.ms-excel");
 		OutputStream o;
