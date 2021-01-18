@@ -173,4 +173,9 @@
 			<aop:before pointcut-ref="dataSourcePointcut" method="before"/>
 		</aop:aspect>
 	</aop:config>
+
+	<!--webservice服务-->
+	<bean class="org.springframework.remoting.jaxws.SimpleJaxWsServiceExporter">
+		<property name="baseAddress" value="${ws.url}" />
+	</bean>
 </beans>
