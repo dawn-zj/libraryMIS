@@ -1,3 +1,3 @@
 ＃libraryMIS
 
-项目基础SSM框架，整合Shiro权限。
+项目基于SSM框架，整合Shiro权限。
