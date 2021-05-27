@@ -6,7 +6,7 @@ import java.util.Map;
 
 import cn.com.gs.common.util.StringUtil;
 
-public class SignUtil {
+public class MD5Util {
 
 	/**
 	 * md5加密：对数据进行MD5摘要运算
@@ -36,8 +36,8 @@ public class SignUtil {
 			return new String(b);
 		}
 	}
-	
-	
+
+
 	public static boolean md5VerifySign(byte[] plain, String sign) {
 		String mySign = md5Sign(plain);
 		if(mySign.equals(sign.toLowerCase())) {
@@ -45,7 +45,7 @@ public class SignUtil {
 		}
 		return false;
 	}
-	
+
 	public static void main(String[] args) {
 		String str = "son";
 		//签名
