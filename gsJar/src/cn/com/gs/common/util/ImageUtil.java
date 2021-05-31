@@ -1,5 +1,6 @@
 package cn.com.gs.common.util;
 
+import cn.com.gs.common.define.Constants;
 import cn.com.gs.common.exception.NetGSRuntimeException;
 import cn.com.gs.common.resource.ErrCode;
 
@@ -66,20 +67,20 @@ public class ImageUtil {
 		try {
 			is = new ByteArrayInputStream(sourcePhotoData);
 			// 如果是MultipartFile类型，那么自身也有转换成流的方法：is = file.getInputStream();
-			
+
 			BufferedImage bufferedImage = handlePhoto(is);
 			//ImageIO.write(bufferedImage, "png", new File(targetPhotoPath));// 直接输出文件
 			ImageIO.write(bufferedImage, "png", byteArrayOutputStream);//放到输出流中
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
- 
+
 		}
 		return byteArrayOutputStream.toByteArray();
 	}
 
 	/**
-	 * 调整图片为透明背景
+	 * 调整图片为透明背景，暂只支持红色字体去背景
 	 * @param sourcePhotoPath 原图片路径
 	 * @return
 	 */
@@ -89,17 +90,17 @@ public class ImageUtil {
 		InputStream is;
 		try {
 			is = new FileInputStream(file);
-			
+
 			BufferedImage bufferedImage = handlePhoto(is);
 			ImageIO.write(bufferedImage, "png", byteArrayOutputStream);//放到输出流中
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
- 
+
 		}
 		return byteArrayOutputStream.toByteArray();
 	}
-	
+
 	public static BufferedImage handlePhoto(InputStream is) throws Exception {
 		//1.读取输入流，将图片加载到内存区，（可转为ImageIcon，方便得到图像的宽高）
 		BufferedImage bi = ImageIO.read(is);
@@ -209,16 +210,16 @@ public class ImageUtil {
 	}
 
 	public static void main(String[] args) throws Exception {
-//		byte[] photoData = transferAlpha("F:/temp/seal.png");
-//		FileUtil.storeFile("F:/temp/sealConventBGColor.png", photoData);
-//		System.out.println("图片处理完毕！");
+		byte[] photoData = transferAlpha(Constants.FILE_PATH + "gs.png");
+		FileUtil.storeFile(Constants.FILE_OUT_PATH + "gs_去底色.png", photoData);
+		System.out.println("图片处理完毕！");
 
-		Font font = new Font("微软雅黑",Font.PLAIN,32);
-		String watermarkContent = "java水印开发系统";
-		Color color = new Color(255, 255, 255,0);
-
-		String srcImgPath = "F:/temp/1.jpg";
-		String tarImgPath = "F:/temp/1_1.jpg";
-		addWaterMark(srcImgPath, tarImgPath, watermarkContent, color, font);
+		// Font font = new Font("微软雅黑",Font.PLAIN,64);
+		// String watermarkContent = "@俊哲999";
+		// Color color = new Color(255, 255, 255,0);
+		//
+		// String srcImgPath = Constants.FILE_PATH + "gs.png";
+		// String tarImgPath = Constants.FILE_OUT_PATH + "gs.png";
+		// addWaterMark(srcImgPath, tarImgPath, watermarkContent, color, font);
 	}
 }

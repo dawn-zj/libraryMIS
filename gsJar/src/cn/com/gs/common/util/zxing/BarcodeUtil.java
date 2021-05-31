@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import cn.com.gs.common.define.Constants;
 import cn.com.gs.common.util.FileUtil;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
@@ -49,7 +50,7 @@ public class BarcodeUtil {
 
 	public static void main(String[] args) {
 		byte[] bytes = genBarcodeImage("https://www.baidu.com");
-		FileUtil.storeFile("E:/temp/barcodeImage.jpg", bytes);
+		FileUtil.storeFile(Constants.FILE_OUT_PATH + "barcodeImage.jpg", bytes);
 		System.out.println("制作完成");
 	}
 }

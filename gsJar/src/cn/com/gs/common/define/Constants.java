@@ -1,5 +1,7 @@
 package cn.com.gs.common.define;
 
+import cn.com.gs.common.util.FileUtil;
+
 public class Constants {
 
 	public static final String VERISON = "version1.0"; // 系统版本号统一出处
@@ -17,6 +19,10 @@ public class Constants {
 	public static final String TXT_SUFFIX = ".txt"; // txt文件后缀
 	public static final String CONF_SUFFIX = ".properties"; // properties文件后缀
 	public static final String CER_SUFFIX = ".cer"; // cert文件后缀
+
+	public static final String CONTEXT_PATH = FileUtil.getContextPath();// 项目目录相对路径
+	public static final String FILE_PATH = CONTEXT_PATH + "/gsJar/file/";// 项目内测文件相对路径
+	public static final String FILE_OUT_PATH = CONTEXT_PATH + "/gsJar/file/out/";// 项目内测输出文件相对路径
 
 	public static final String ROOT_PATH = "E:/GSConf/";
 	public static final String PHOTO_PATH = ROOT_PATH + "photo/";

@@ -1,5 +1,7 @@
 package cn.com.gs.common.util.awt;
 
+import cn.com.gs.common.define.Constants;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
@@ -11,7 +13,7 @@ import java.util.Random;
 import javax.imageio.ImageIO;
 
 /**
- * 生成验证码图片
+ * 生成图片验证码
  *
  */
 public class GenAuthCode {
@@ -30,7 +32,7 @@ public class GenAuthCode {
 	private char[] codeSequence = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R',
 			'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
 
-	private BufferedImage bufferedImage;
+	private BufferedImage bufferedImage = null;
 
 	private GenAuthCode(int width, int height) {
 		this.width = width;
@@ -41,7 +43,6 @@ public class GenAuthCode {
 		this(width, height);
 		this.codeCount = codeCount;
 		this.lineCount = lineCount;
-		createCodeImage();
 	}
 
 	private void createCodeImage() {
@@ -103,16 +104,24 @@ public class GenAuthCode {
 		outputStream.close();
 	}
 
-	public void write(OutputStream outputStream) throws IOException {
-		ImageIO.write(bufferedImage, "png", outputStream);
+	private void write(OutputStream outputStream) throws IOException {
+		ImageIO.write(getBufferedImage(), "png", outputStream);
 	}
 
 	public BufferedImage getBufferedImage() {
+		if (bufferedImage == null)
+			createCodeImage();
+
 		return bufferedImage;
 	}
 
 	public String getCode() {
 		return code;
+	}
+
+	public static void main(String[] args) throws Exception {
+		new GenAuthCode(160, 160).write(Constants.FILE_OUT_PATH + "authCodeImage.jpg");
+		System.out.println("制作完成");
 	}
 
 }

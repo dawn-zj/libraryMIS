@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.com.gs.common.define.Constants;
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
 import net.lingala.zip4j.model.FileHeader;
@@ -13,23 +14,20 @@ import net.lingala.zip4j.util.Zip4jConstants;
 public class ZipUtil {
 
 	public static void main(String[] args) {
-		/*
-		 * String zipPath = "D:/tmp/1.zip"; String filePath = "D:/tmp/1.txt";
-		 * zipFile(filePath, zipPath, "123");
-		 */
-
-		String zipPath = "D:/tmp/tmp.zip";
-		String filePath = "D:/tmp/";
+		String zipPath = Constants.FILE_OUT_PATH + "file.zip";
+		String unzipPath = Constants.FILE_OUT_PATH + "file_unzip";
+		String filePath = Constants.FILE_PATH;
 		zipDir(filePath, zipPath, "");
+		unZip(zipPath, unzipPath, "");
 		System.out.println("ok");
 	}
 
 	/**
 	 * 压缩文件
-	 * 
-	 * @param filePath
-	 * @param zipPath
-	 * @param pwd
+	 *
+	 * @param filePath 文件路径
+	 * @param zipPath 压缩后存放路径
+	 * @param pwd 压缩密码
 	 * @throws Exception
 	 */
 	public static void zipFile(String filePath, String zipPath, String pwd) {
@@ -54,10 +52,10 @@ public class ZipUtil {
 
 	/**
 	 * 压缩文件夹
-	 * 
-	 * @param dirPath
-	 * @param zipPath
-	 * @param pwd
+	 *
+	 * @param dirPath 文件夹路径
+	 * @param zipPath 压缩后存放路径
+	 * @param pwd 压缩密码
 	 */
 	public static void zipDir(String dirPath, String zipPath, String pwd) {
 		try {
@@ -80,7 +78,7 @@ public class ZipUtil {
 
 	/**
 	 * 递归
-	 * 
+	 *
 	 * @param filePath
 	 * @param fileList
 	 */
@@ -96,16 +94,16 @@ public class ZipUtil {
 
 	/**
 	 * 解压
-	 * 
-	 * @param zipPath
-	 * @param filePath
-	 * @param pwd
+	 *
+	 * @param zipPath 压缩文件路径
+	 * @param filePath 解压后存放路径
+	 * @param pwd 解压密码
 	 * @throws Exception
 	 */
 	public static void unZip(String zipPath, String filePath, String pwd) {
 		try {
 			ZipFile zipFile = new ZipFile(zipPath);
-			zipFile.setFileNameCharset("GBK");
+			zipFile.setFileNameCharset("UTF8");
 			if (StringUtil.isBlank(pwd)) {
 				zipFile.extractAll(filePath);
 			} else {

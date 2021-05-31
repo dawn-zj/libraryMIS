@@ -1,8 +1,6 @@
 package cn.com.gs.common.util;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
@@ -25,13 +23,21 @@ import javax.imageio.ImageIO;
 
 import cn.com.gs.common.define.Constants;
 import cn.com.gs.common.exception.NetGSRuntimeException;
-import cn.com.gs.common.resource.ErrCode;
 
 public class FileUtil {
 
 	/**
+	 * 获取当前系统相对路径
+	 * @return
+	 */
+	public static String getContextPath() {
+		String filePath = System.getProperty("user.dir");
+		return filePath;
+	}
+
+	/**
 	 * 校验指定文件路径的文件是否存在
-	 * 
+	 *
 	 * @param filePath
 	 *            文件路径
 	 * @return boolean
@@ -49,7 +55,7 @@ public class FileUtil {
 
 	/**
 	 * 根据文件路径创建绝对路径（目标文件夹）
-	 * 
+	 *
 	 * @param filePath
 	 *            文件路径
 	 * @throws Exception
@@ -65,7 +71,7 @@ public class FileUtil {
 
 	/**
 	 * 删除文件
-	 * 
+	 *
 	 * @param filePath
 	 *            文件路径
 	 * @throws Exception
@@ -81,7 +87,7 @@ public class FileUtil {
 
 	/**
 	 * 删除目录
-	 * 
+	 *
 	 * @param dirPath
 	 *            目录路径
 	 * @throws Exception
@@ -108,7 +114,7 @@ public class FileUtil {
 
 	/**
 	 * 删除空目录
-	 * 
+	 *
 	 * @param dirPath
 	 *            目录路径
 	 * @throws Exception
@@ -127,7 +133,7 @@ public class FileUtil {
 
 	/**
 	 * 删除目录
-	 * 
+	 *
 	 * @param dirPath
 	 *            目录路径
 	 * @param excludePath
@@ -155,7 +161,7 @@ public class FileUtil {
 
 	/**
 	 * 删除文件及所在目录
-	 * 
+	 *
 	 * @param filePath
 	 *            文件路径
 	 */
@@ -168,7 +174,7 @@ public class FileUtil {
 
 	/**
 	 * 列出目录下文件名称
-	 * 
+	 *
 	 * @param dirPath
 	 *            目录路径
 	 * @return String[] 返回目录下的文件名
@@ -186,7 +192,7 @@ public class FileUtil {
 
 	/**
 	 * 获取文件数据，先校验文件路径
-	 * 
+	 *
 	 * @param filePath
 	 *            文件路径
 	 * @return byte[] 文件的字节数组
@@ -218,7 +224,7 @@ public class FileUtil {
 
 	/**
 	 * 获取文件数据，不校验文件路径
-	 * 
+	 *
 	 * @param filePath
 	 *            文件路径
 	 * @return byte[] 文件的字节数组
@@ -247,7 +253,7 @@ public class FileUtil {
 
 	/**
 	 * 文件中是否含有指定内容
-	 * 
+	 *
 	 * @param filePath
 	 *            文件路径
 	 * @return data 指定的内容
@@ -284,7 +290,7 @@ public class FileUtil {
 
 	/**
 	 * 文件中是否含有指定内容(证书作废时间在签章时间之前返回true)
-	 * 
+	 *
 	 * @param filePath
 	 *            文件路径
 	 * @param data
@@ -328,7 +334,7 @@ public class FileUtil {
 
 	/**
 	 * 获取文件后缀名
-	 * 
+	 *
 	 * @param fileName
 	 *            文件名
 	 * @return
@@ -346,7 +352,7 @@ public class FileUtil {
 
 	/**
 	 * 获取图片数据 (数据、宽、高)
-	 * 
+	 *
 	 * @param filePath
 	 *            图片路径
 	 * @return List
@@ -372,7 +378,7 @@ public class FileUtil {
 
 	/**
 	 * 获取图片数据 (数据、宽、高)
-	 * 
+	 *
 	 * @param bs
 	 *            图片数据
 	 * @return List
@@ -395,7 +401,7 @@ public class FileUtil {
 
 	/**
 	 * 保存文件（覆盖）
-	 * 
+	 *
 	 * @param filePath
 	 *            目标路径
 	 * @param data
@@ -436,7 +442,7 @@ public class FileUtil {
 
 	/**
 	 * 保存文件（追加）
-	 * 
+	 *
 	 * @param filePath
 	 *            目标路径
 	 * @param data
@@ -480,7 +486,7 @@ public class FileUtil {
 
 	/**
 	 * 产生图片
-	 * 
+	 *
 	 * @param filePath
 	 *            图片存储目标路径
 	 * @param content
@@ -513,7 +519,7 @@ public class FileUtil {
 
 	/**
 	 * 产生文件名
-	 * 
+	 *
 	 * @return
 	 */
 	public static String getFileName() {
@@ -525,7 +531,7 @@ public class FileUtil {
 
 	/**
 	 * 获取文件总行数
-	 * 
+	 *
 	 * @param filePath
 	 *            文件路径
 	 * @return 行数
@@ -559,7 +565,7 @@ public class FileUtil {
 
 	/**
 	 * 读取文件指定行
-	 * 
+	 *
 	 * @param filePath
 	 *            文件路径
 	 * @param begin
@@ -607,7 +613,7 @@ public class FileUtil {
 
 	/**
 	 * 复制目录
-	 * 
+	 *
 	 * @param srcDir
 	 *            原目录路径
 	 * @param desDir
@@ -655,7 +661,7 @@ public class FileUtil {
 
 	/**
 	 * 将信息记录文件中
-	 * 
+	 *
 	 * @param filePath
 	 *            文件路径
 	 * @param newLog
@@ -694,7 +700,7 @@ public class FileUtil {
 
 	/**
 	 * 校验文件路径
-	 * 
+	 *
 	 * @param filePath
 	 */
 	private static void checkPath(String filePath, boolean checkExist) {
@@ -710,8 +716,7 @@ public class FileUtil {
 	}
 
 	public static void main(String[] args) {
-		FileUtil.storeFile("f:/temp/rs.asn1", HexUtil.hex2Byte(
-				"304402207a42ed902e75a364aa07b20ddacc8e6015a8a4f443c543b3d901e24f22c926520220bc9023ae33e1a28a5cb72443da8ebfef4909dfd105a9fe24241a2edfad74b397"));
+		System.out.println(FileUtil.getContextPath());
 	}
 
 }

@@ -6,6 +6,7 @@ import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 
+import cn.com.gs.common.define.Constants;
 import cn.com.gs.common.util.FileUtil;
 import cn.com.gs.common.util.base64.Base64Util;
 
@@ -39,12 +40,13 @@ public class CertUtil {
 			in = new ByteArrayInputStream(certTmp);
 		}
 		// CertificateFactory cf = CertificateFactory.getInstance("X.509FX", "INFOSEC");
-		CertificateFactory cf = CertificateFactory.getInstance("X.509");
+		CertificateFactory cf = CertificateFactory.getInstance("X.509"); //暂只支持RSA证书
 		return (X509Certificate) cf.generateCertificate(in);
 	}
 
 	public static void main(String[] args) throws Exception {
-		byte[] file = FileUtil.getFile("D:\\infosec\\cert\\ZJ_SC_RSA_ROOT.cer");
+		// todo 暂只支持RSA证书
+		byte[] file = FileUtil.getFile(Constants.FILE_PATH + "ZJ_SC_RSA_ROOT.cer");
 		X509Certificate x509Certificate = getX509Certificate(file);
 		System.out.println(x509Certificate.getSubjectDN());
 	}

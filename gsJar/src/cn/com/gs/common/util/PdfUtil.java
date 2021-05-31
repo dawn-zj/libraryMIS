@@ -1,5 +1,6 @@
 package cn.com.gs.common.util;
 
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.Properties;
 
@@ -8,11 +9,15 @@ import cn.com.gs.common.exception.NetGSRuntimeException;
 import cn.com.gs.common.resource.ErrCode;
 import cn.com.gs.common.util.date.DateUtil;
 import cn.com.gs.common.util.logger.LoggerUtil;
+import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Image;
 import com.itextpdf.text.pdf.*;
 import com.sun.javaws.exceptions.BadMimeTypeResponseException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.util.PDFTextStripper;
+
+import javax.imageio.ImageIO;
 
 public class PdfUtil {
 
@@ -92,18 +97,18 @@ public class PdfUtil {
 			}
 		}
 	}
-	
+
 	/**
 	 * 给pdf的指定页码和坐标添加图片
 	 * @param pdfData pdf文件
-	 * @param jpgData 图片
+	 * @param photoData 图片
 	 * @param pageNumber 页码
 	 * @param x x坐标
 	 * @param y y坐标
 	 * @param w 图片宽度
 	 * @param h 图片高度
 	 */
-	public static byte[] pdfAddImage(byte[] pdfData, byte[] jpgData, int pageNumber, float x, float y, float w, float h) throws Exception{
+	public static byte[] pdfAddImage(byte[] pdfData, byte[] photoData, int pageNumber, float x, float y, float w, float h) throws Exception{
 		PdfReader reader = null;
 		PdfStamper stamper = null;
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -117,13 +122,37 @@ public class PdfUtil {
 			if (pageNumber > totalPageNum || pageNumber < 1)
 				throw new NetGSRuntimeException(ErrCode.PAGE_NUM_OVER_LIMIT_IN_PDF, "page number over limit in pdf");
 
+
+			// 获取该页的宽高
+			Document document = new Document(reader.getPageSize(pageNumber));
+			float widthPage = document.getPageSize().getWidth();
+			float heightPage = document.getPageSize().getHeight();
+
+			// TODO Image相关内容
+			BufferedImage sourceImg = ImageIO.read(new ByteArrayInputStream(photoData));
+			float widthImage = sourceImg.getWidth() * 72f / 96;
+			float heightImage = sourceImg.getHeight() * 72f / 96;
+
+			Image img = Image.getInstance(photoData);
+			img.scaleAbsoluteWidth(sourceImg.getWidth());
+			img.scaleAbsoluteHeight(sourceImg.getHeight());
+			// 坐标越界处理
+			if (x < 0)
+				x = 0;
+			if (x >= widthPage)
+				x = widthPage - widthImage;
+			if (y < 0)
+				y = 0;
+			if (y >= heightPage)
+				y = heightPage - heightImage;
+
+			img.setAbsolutePosition(x, y);
+
 			// 获取该页码的内容
 			PdfContentByte content = stamper.getOverContent(pageNumber);
 			if (content == null)
 				throw new NetGSRuntimeException("page number " + pageNumber + " out of range");
-
-			// TODO Image相关内容
-//			content.addImage(img);
+			content.addImage(img);
 			stamper.close();
 
 			return baos.toByteArray();
@@ -147,8 +176,7 @@ public class PdfUtil {
 	}
 
 
-	public static void genPdfTest() throws Exception {
-		String pdfTemplatePath = Constants.PDF_TEMPLATE_PATH + "req_con.pdf";
+	public static byte[] genPdfTest(String pdfTemplatePath) throws Exception {
 		byte[] pdfTemplateData = FileUtil.getFile(pdfTemplatePath);
 
 		Properties properties = new Properties();
@@ -173,10 +201,17 @@ public class PdfUtil {
 		properties.setProperty("remark", "无");
 
 		byte[] pdfData = genPdfByTemplate(pdfTemplateData, properties);
-		FileUtil.storeFile("F:/pdf/个人信息.pdf", pdfData);
+		return pdfData;
 	}
 
 	public static void main(String[] args) throws Exception {
-		genPdfTest();
+		// 根据模板制作pdf
+		byte[] pdfData = genPdfTest(Constants.FILE_PATH + "req_con.pdf");
+		FileUtil.storeFile(Constants.FILE_OUT_PATH + "个人信息.pdf", pdfData);
+
+		byte[] photoData = FileUtil.getFile(Constants.FILE_OUT_PATH + "gs_去底色.png");
+		byte[] addImagePdf = pdfAddImage(pdfData, photoData, 1, 100, 100, 100, 100);
+		FileUtil.storeFile(Constants.FILE_OUT_PATH + "个人信息_addImage.pdf", addImagePdf);
+
 	}
 }
