@@ -4,6 +4,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
+import cn.com.gs.common.util.FileUtil;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.MultiFormatWriter;
@@ -14,7 +16,7 @@ import com.google.zxing.common.BitMatrix;
 public class BarcodeUtil {
 	/**
 	 * 生成二维码图像
-	 * 
+	 *
 	 * @throws WriterException
 	 * @throws IOException
 	 */
@@ -43,5 +45,11 @@ public class BarcodeUtil {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public static void main(String[] args) {
+		byte[] bytes = genBarcodeImage("https://www.baidu.com");
+		FileUtil.storeFile("E:/temp/barcodeImage.jpg", bytes);
+		System.out.println("制作完成");
 	}
 }
