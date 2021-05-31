@@ -97,7 +97,7 @@ public class HttpClientUtil {
 		return result;
 	}
 
-	public static String httpsPost(String url, String message) throws Exception {
+	private static String httpsPost(String url, String message) throws Exception {
 		HttpsURLConnection conn = null;
 		String result = null;
 		try {
