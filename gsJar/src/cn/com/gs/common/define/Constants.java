@@ -16,6 +16,7 @@ public class Constants {
 	public static final String LOG_SUFFIX = ".log"; // log文件后缀
 	public static final String TXT_SUFFIX = ".txt"; // txt文件后缀
 	public static final String CONF_SUFFIX = ".properties"; // properties文件后缀
+	public static final String CER_SUFFIX = ".cer"; // cert文件后缀
 
 	public static final String ROOT_PATH = "E:/GSConf/";
 	public static final String PHOTO_PATH = ROOT_PATH + "photo/";

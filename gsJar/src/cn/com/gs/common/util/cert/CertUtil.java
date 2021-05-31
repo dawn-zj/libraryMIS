@@ -5,6 +5,8 @@ import java.math.BigInteger;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
+
+import cn.com.gs.common.util.FileUtil;
 import cn.com.gs.common.util.base64.Base64Util;
 
 public class CertUtil {
@@ -36,7 +38,14 @@ public class CertUtil {
 			byte[] certTmp = Base64Util.decode(b64Cert.trim());
 			in = new ByteArrayInputStream(certTmp);
 		}
-		CertificateFactory cf = CertificateFactory.getInstance("X.509FX", "INFOSEC");
+		// CertificateFactory cf = CertificateFactory.getInstance("X.509FX", "INFOSEC");
+		CertificateFactory cf = CertificateFactory.getInstance("X.509");
 		return (X509Certificate) cf.generateCertificate(in);
+	}
+
+	public static void main(String[] args) throws Exception {
+		byte[] file = FileUtil.getFile("D:\\infosec\\cert\\ZJ_SC_RSA_ROOT.cer");
+		X509Certificate x509Certificate = getX509Certificate(file);
+		System.out.println(x509Certificate.getSubjectDN());
 	}
 }
