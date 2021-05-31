@@ -26,7 +26,7 @@ public class SigarUtil {
 		if (sigar == null) {
 			// 获取系统变量的值
 			String path = System.getProperty("java.library.path");
-			// 添加系统变量：libfmjniapi.so和libsigar-amd64-linux.so放在nativelib文件夹，将路径添加到系统变量
+			// 添加系统变量：libsigar-amd64-linux.so放在nativelib文件夹，将路径添加到系统变量
 			if (!path.contains(Constants.NATIVELIB_PATH)) {
 				System.setProperty("java.library.path", path + ":" + Constants.NATIVELIB_PATH);
 			}
@@ -107,5 +107,13 @@ public class SigarUtil {
 		}
 
 		return resultMap;
+	}
+
+	public static void main(String[] args) {
+		Map<String, Object> systemData = SigarUtil.getInstance().getSystemData();
+		for(String key : systemData.keySet()){
+			Object value = systemData.get(key);
+			System.out.println(key + ":" + value);
+		}
 	}
 }
