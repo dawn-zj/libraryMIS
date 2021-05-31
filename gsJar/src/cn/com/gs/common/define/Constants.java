@@ -1,7 +1,7 @@
 package cn.com.gs.common.define;
 
 public class Constants {
-	
+
 	public static final String VERISON = "version1.0"; // 系统版本号统一出处
 	public static final String UTF_8 = "UTF-8"; // 系统编码
 	public static final String SPLIT_1 = ","; // 分割符1
@@ -34,5 +34,18 @@ public class Constants {
 	//邮件
 	public static final String Email_Account = "867096367@qq.com";//3385528945
 	public static final String Email_Authz_Password = "wxpqpjeklcsvbgag";//zj19970818 授权码
-	
+
+	// 算法标识
+	public static final String EC = "EC";
+	public static final String SM2 = "SM2";
+	public static final String SM3 = "SM3";
+	public static final String SM4 = "SM4";
+	public static final String SM3_SM2 = "SM3withSM2";
+	public static final String RSA = "RSA";
+	public static final String SHA1 = "SHA1";
+	public static final String SHA256 = "SHA256";
+	public static final String SHA512 = "SHA512";
+	public static final String SHA1_RSA = "SHA1withRSA";
+	public static final String SHA256_RSA = "SHA256withRSA";
+
 }
