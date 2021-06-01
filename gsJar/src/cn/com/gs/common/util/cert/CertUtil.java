@@ -2,9 +2,12 @@ package cn.com.gs.common.util.cert;
 
 import java.io.ByteArrayInputStream;
 import java.math.BigInteger;
+import java.security.Provider;
+import java.security.Security;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
+import java.util.Enumeration;
 
 import cn.com.gs.common.define.Constants;
 import cn.com.gs.common.util.FileUtil;
@@ -44,6 +47,16 @@ public class CertUtil {
 		// CertificateFactory cf = CertificateFactory.getInstance("X.509"); //java自带security，暂只支持RSA证书
 		CertificateFactory cf = CertificateFactory.getInstance("X.509", new BouncyCastleProvider()); //使用第三方BouncyCastle作为提供者，支持RSA和国密证书
 		return (X509Certificate) cf.generateCertificate(in);
+	}
+
+	public static void getAllProvider() {
+		Provider[] providers = Security.getProviders();
+		for (int i = 0; i < providers.length; i++) {
+			System.out.println("" + (i + 1) + ":" + providers[i]);
+			for (Enumeration<?> e = providers[i].keys(); e.hasMoreElements();) {
+				System.out.println("\t" + e.nextElement());
+			}
+		}
 	}
 
 	public static void main(String[] args) throws Exception {

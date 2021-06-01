@@ -34,7 +34,7 @@ public class GenAuthCode {
 
 	private BufferedImage bufferedImage = null;
 
-	private GenAuthCode(int width, int height) {
+	public GenAuthCode(int width, int height) {
 		this.width = width;
 		this.height = height;
 	}

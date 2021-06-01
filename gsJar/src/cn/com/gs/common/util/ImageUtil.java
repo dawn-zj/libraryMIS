@@ -3,21 +3,32 @@ package cn.com.gs.common.util;
 import cn.com.gs.common.define.Constants;
 import cn.com.gs.common.exception.NetGSRuntimeException;
 import cn.com.gs.common.resource.ErrCode;
+import cn.com.gs.common.util.awt.GenAuthCode;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
+import org.junit.Test;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 /**
- *	图片去底色工具类
+ * 图片去底色工具类
  */
 public class ImageUtil {
 
 	/**
 	 * 处理图片红字颜色透明度
-	 * @param bs 图片数据
+	 *
+	 * @param bs    图片数据
 	 * @param alpha 透明度 最大255（数值越大，颜色越红）
 	 *              convertFontColor(file.getBytes(),(int) (templateVO.getTransparency()*2.55));
 	 * @return
@@ -58,6 +69,7 @@ public class ImageUtil {
 
 	/**
 	 * 调整图片为透明背景
+	 *
 	 * @param sourcePhotoData 原图片字节数据
 	 * @return
 	 */
@@ -81,6 +93,7 @@ public class ImageUtil {
 
 	/**
 	 * 调整图片为透明背景，暂只支持红色字体去背景
+	 *
 	 * @param sourcePhotoPath 原图片路径
 	 * @return
 	 */
@@ -101,7 +114,7 @@ public class ImageUtil {
 		return byteArrayOutputStream.toByteArray();
 	}
 
-	public static BufferedImage handlePhoto(InputStream is) throws Exception {
+	private static BufferedImage handlePhoto(InputStream is) throws Exception {
 		//1.读取输入流，将图片加载到内存区，（可转为ImageIcon，方便得到图像的宽高）
 		BufferedImage bi = ImageIO.read(is);
 		Image image = (Image) bi;
@@ -122,12 +135,12 @@ public class ImageUtil {
 			for (int j2 = bufferedImage.getMinX(); j2 < bufferedImage.getWidth(); j2++) {
 				int rgb = bufferedImage.getRGB(j2, j1);
 				/*
-				* <<，有符号左移位，将运算数的二进制整体左移指定位数，低位用0补齐。
-				* >>，有符号右移位，将运算数的二进制整体右移指定位数，整数高位用0补齐，负数高位用1补齐（保持负数符号不变）。
-				* >>>，无符号右移位，不管正数还是负数，高位都用0补齐（忽略符号位）。
-				*
-				* Java中每个RGB像素所占的位数为8
-				* */
+				 * <<，有符号左移位，将运算数的二进制整体左移指定位数，低位用0补齐。
+				 * >>，有符号右移位，将运算数的二进制整体右移指定位数，整数高位用0补齐，负数高位用1补齐（保持负数符号不变）。
+				 * >>>，无符号右移位，不管正数还是负数，高位都用0补齐（忽略符号位）。
+				 *
+				 * Java中每个RGB像素所占的位数为8
+				 * */
 				int R = (rgb & 0xff0000) >> 16;
 				int G = (rgb & 0xff00) >> 8;
 				int B = (rgb & 0xff);
@@ -156,13 +169,13 @@ public class ImageUtil {
 	 */
 	public static void addWaterMark(String srcImagePath, String tarImagePath, String waterMarkContent, Color color, Font font) throws Exception {
 		/*
-		* 1.获取原图宽高；
-		* 2.创建同等宽高画板，创建图像，画原图；
-		* 3.计算坐标位置，画水印；
-		* 4.释放资源；
-		* 5.输出图像；
-		*
-		* */
+		 * 1.获取原图宽高；
+		 * 2.创建同等宽高画板，创建图像，画原图；
+		 * 3.计算坐标位置，画水印；
+		 * 4.释放资源；
+		 * 5.输出图像；
+		 *
+		 * */
 
 		//1.获取图片的宽和高
 		File srcImgFile = new File(srcImagePath);
@@ -171,19 +184,19 @@ public class ImageUtil {
 		int srcImgheight = srcImg.getHeight(null);
 
 		//画水印需要一个画板，创建一个画板
-		BufferedImage buffImg = new BufferedImage(srcImgwidth,srcImgheight,BufferedImage.TYPE_INT_RGB);
+		BufferedImage buffImg = new BufferedImage(srcImgwidth, srcImgheight, BufferedImage.TYPE_INT_RGB);
 		//创建一个2D的图像
 		Graphics2D g = buffImg.createGraphics();
 		//画出来
-		g.drawImage(srcImg, 0, 0, srcImgwidth, srcImgheight,null);
+		g.drawImage(srcImg, 0, 0, srcImgwidth, srcImgheight, null);
 
 		//设置水印的颜色
 		g.setColor(color);
 		//设置水印的字体
 		g.setFont(font);
 		//设置水印坐标
-		int x = srcImgwidth*19/20 - getwaterMarkLength(waterMarkContent, g);
-		int y = srcImgheight*9/10;
+		int x = srcImgwidth * 19 / 20 - getWaterMarkLength(waterMarkContent, g);
+		int y = srcImgheight * 9 / 10;
 		//根据获取的坐标 在相应的位置画出水印
 		g.drawString(waterMarkContent, x, y);
 
@@ -199,14 +212,52 @@ public class ImageUtil {
 
 	/**
 	 * 获取水印的坐标
+	 *
 	 * @param watermarkContent
 	 * @param g
 	 * @return
 	 */
-	public static int getwaterMarkLength(String watermarkContent,Graphics2D g) {
+	private static int getWaterMarkLength(String watermarkContent, Graphics2D g) {
 
-		return	g.getFontMetrics(g.getFont()).charsWidth(watermarkContent.toCharArray(), 0, watermarkContent.length());
+		return g.getFontMetrics(g.getFont()).charsWidth(watermarkContent.toCharArray(), 0, watermarkContent.length());
 
+	}
+
+	/**
+	 * 生成二维码图像
+	 *
+	 * @throws WriterException
+	 * @throws IOException
+	 */
+	public static byte[] genBarcodeImage(String content) {
+		int width = 200; // 图像宽度
+		int height = 200; // 图像高度
+		String format = "jpg";// 图像类型
+		try {
+			BarcodeFormat bf = BarcodeFormat.QR_CODE;
+
+			Map<EncodeHintType, Object> hints = new HashMap<EncodeHintType, Object>();
+			hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
+			/**
+			 * MultiFormatWriter:多格式写入，这是一个工厂类，里面重载了两个 encode 方法，用于写入条形码或二维码 encode(String
+			 * contents,BarcodeFormat format,int width, int height,Map<EncodeHintType,?>
+			 * hints) contents:条形码/二维码内容 format：编码类型，如 条形码，二维码 等 width：码的宽度 height：码的高度
+			 * hints：码内容的编码类型 BarcodeFormat：枚举该程序包已知的条形码格式，即创建何种码，如 1 维的条形码，2 维的二维码 等
+			 * BitMatrix：位(比特)矩阵或叫2D矩阵，也就是需要的二维码
+			 */
+
+			BitMatrix bitMatrix = new MultiFormatWriter().encode(content, bf, width, height, hints);// 生成矩阵
+			ByteArrayOutputStream bous = new ByteArrayOutputStream();
+			MatrixToImageWriter.writeToStream(bitMatrix, format, bous);// 输出图像
+			return bous.toByteArray();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public static void genAuthCodeImage(String outPath) throws Exception{
+		new GenAuthCode(160, 160).write(outPath);
 	}
 
 	public static void main(String[] args) throws Exception {
