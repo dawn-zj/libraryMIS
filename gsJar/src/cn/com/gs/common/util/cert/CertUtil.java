@@ -9,6 +9,7 @@ import java.security.cert.X509Certificate;
 import cn.com.gs.common.define.Constants;
 import cn.com.gs.common.util.FileUtil;
 import cn.com.gs.common.util.base64.Base64Util;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 public class CertUtil {
 
@@ -40,13 +41,13 @@ public class CertUtil {
 			in = new ByteArrayInputStream(certTmp);
 		}
 		// CertificateFactory cf = CertificateFactory.getInstance("X.509FX", "INFOSEC");
-		CertificateFactory cf = CertificateFactory.getInstance("X.509"); //暂只支持RSA证书
+		// CertificateFactory cf = CertificateFactory.getInstance("X.509"); //java自带security，暂只支持RSA证书
+		CertificateFactory cf = CertificateFactory.getInstance("X.509", new BouncyCastleProvider()); //使用第三方BouncyCastle作为提供者，支持RSA和国密证书
 		return (X509Certificate) cf.generateCertificate(in);
 	}
 
 	public static void main(String[] args) throws Exception {
-		// todo 暂只支持RSA证书
-		byte[] file = FileUtil.getFile(Constants.FILE_PATH + "ZJ_SC_RSA_ROOT.cer");
+		byte[] file = FileUtil.getFile(Constants.FILE_PATH + "ca.cer");
 		X509Certificate x509Certificate = getX509Certificate(file);
 		System.out.println(x509Certificate.getSubjectDN());
 	}
