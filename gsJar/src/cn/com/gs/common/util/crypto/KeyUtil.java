@@ -63,12 +63,12 @@ public class KeyUtil {
 
     /**
      * 对明文进行签名
-     * @param pubKey
-     * @param priKey
-     * @param plain
-     * @param hsmId
-     * @param signAlg
-     * @param id
+     * @param pubKey 国密时使用
+     * @param priKey 私钥
+     * @param plain 原文
+     * @param hsmId 加密卡时使用
+     * @param signAlg 签名哈希算法
+     * @param id 国密时使用
      * @return
      * @throws Exception
      */
@@ -78,12 +78,12 @@ public class KeyUtil {
 
         switch (signAlg) {
             case Constants.SHA1_RSA:
-                Signature sig = Signature.getInstance(Constants.SHA1_RSA, "INFOSEC");
+                Signature sig = Signature.getInstance(Constants.SHA1_RSA);
                 sig.initSign(priKey);
                 sig.update(plain);
                 return sig.sign();
             case Constants.SHA256_RSA:
-                Signature sig256 = Signature.getInstance(Constants.SHA256_RSA, "INFOSEC");
+                Signature sig256 = Signature.getInstance(Constants.SHA256_RSA);
                 sig256.initSign(priKey);
                 sig256.update(plain);
                 return sig256.sign();
@@ -128,8 +128,28 @@ public class KeyUtil {
      * @return 验证是否通过
      * @throws Exception
      */
-    public boolean signVerifyWithPubKey(PublicKey pubKey, byte[] plain, byte[] signed, int hsmId, String signAlg, byte[] id) throws Exception {
-        return false;
+    public static boolean signVerifyWithPubKey(PublicKey pubKey, byte[] plain, byte[] signed, int hsmId, String signAlg, byte[] id) throws Exception {
+        if (pubKey == null)
+            throw new Exception("pubKey is null");
+
+        switch (signAlg) {
+            case Constants.SHA1_RSA:
+                Signature rsa = Signature.getInstance(Constants.SHA1_RSA);
+                rsa.initVerify(pubKey);
+                rsa.update(plain);
+                return rsa.verify(signed);
+            case Constants.SHA256_RSA:
+                Signature rsa256 = Signature.getInstance(Constants.SHA256_RSA);
+                rsa256.initVerify(pubKey);
+                rsa256.update(plain);
+                return rsa256.verify(signed);
+            case Constants.SM3_SM2:
+                // SM2PublicKey pubSm2 = new SM2PublicKey(pubKey.getEncoded());
+                // return NetSignUtil.verify(plain, signed, pubSm2, id);
+                throw new Exception("sign alg don't support, alg is: " + signAlg);
+            default:
+                throw new Exception("sign alg unknown, alg is: " + signAlg);
+        }
     }
 
     /**

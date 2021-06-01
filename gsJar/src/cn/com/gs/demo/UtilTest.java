@@ -7,6 +7,7 @@ import cn.com.gs.common.util.cert.CertUtil;
 import cn.com.gs.common.util.crypto.KeyUtil;
 import cn.com.gs.common.util.crypto.RSAUtil;
 import cn.com.gs.common.util.date.DateUtil;
+import com.sun.corba.se.impl.orbutil.closure.Constant;
 import org.junit.Test;
 
 import java.security.KeyPair;
@@ -212,12 +213,28 @@ public class UtilTest {
 		// 加载RSA公钥
 		byte[] pubKeyData = FileUtil.getFile(Constants.FILE_OUT_PATH + "rsa/pubKey.txt");
 		PublicKey publicKey = RSAUtil.generateP8PublicKey(Base64Util.decode(pubKeyData));
-		byte[] encrypt = KeyUtil.encryptWithPubKey(publicKey, plain.getBytes(), -1, "RSA");
+		byte[] encrypt = KeyUtil.encryptWithPubKey(publicKey, plain.getBytes(), -1, Constants.RSA);
 
 		// 加载RSA私钥
 		byte[] priKeyData = FileUtil.getFile(Constants.FILE_OUT_PATH + "rsa/priKey.txt");
 		PrivateKey privateKey = RSAUtil.generateP8PrivateKey(Base64Util.decode(priKeyData));
-		byte[] decrypt = KeyUtil.decryptWithPriKey(privateKey, encrypt, -1, "RSA");
+		byte[] decrypt = KeyUtil.decryptWithPriKey(privateKey, encrypt, -1, Constants.RSA);
 		System.out.println("解密完成，解密数据：" + new String(decrypt));
+	}
+
+	@Test
+	public void rsaSignTest() throws Exception {
+		String plain = "plain";
+		System.out.println("签名开始，原文数据：" + plain);
+		// 加载RSA私钥
+		byte[] priKeyData = FileUtil.getFile(Constants.FILE_OUT_PATH + "rsa/priKey.txt");
+		PrivateKey privateKey = RSAUtil.generateP8PrivateKey(Base64Util.decode(priKeyData));
+		byte[] signed = KeyUtil.signWithPriKey(null, privateKey, plain.getBytes(), -1, Constants.SHA256_RSA, "1".getBytes());
+
+		// 加载RSA公钥
+		byte[] pubKeyData = FileUtil.getFile(Constants.FILE_OUT_PATH + "rsa/pubKey.txt");
+		PublicKey publicKey = RSAUtil.generateP8PublicKey(Base64Util.decode(pubKeyData));
+		boolean result = KeyUtil.signVerifyWithPubKey(publicKey, plain.getBytes(), signed, -1, Constants.SHA256_RSA, "1".getBytes());
+		System.out.println("验签完成，验签结果：" + result);
 	}
 }
