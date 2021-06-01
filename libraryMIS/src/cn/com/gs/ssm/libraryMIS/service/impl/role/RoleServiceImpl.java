@@ -22,7 +22,7 @@ public class RoleServiceImpl implements IRoleService{
 	private RoleDao roleDao;
 	@Resource
 	private MenuDao menuDao;
-	
+
 	@Override
 	public RoleVO getRoleById(Integer id) {
 		Role role = roleDao.getRoleById(id);
@@ -30,7 +30,7 @@ public class RoleServiceImpl implements IRoleService{
 			return null;
 		RoleVO roleVO = new RoleVO();
 		BeanUtils.copyProperties(role, roleVO);
-		
+
 		return roleVO;
 	}
 
@@ -45,23 +45,23 @@ public class RoleServiceImpl implements IRoleService{
 		}
 		return roleVOList;
 	}
-	
+
 	/**
 	 * 授权
-	 * @param roleVO
+	 * @param
 	 * @param menuIds
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public void roleMenu(Integer id, String menuIds, String buttonIds) throws Exception {
 		Role role = roleDao.getRoleById(id);
-		
-		long update_time = DateUtil.getTime();
+
+		long update_time = DateUtil.getCurrentTime();
 		role.setUpdateTime((int)update_time);
 		role.setMenuId(menuIds);
 		int r = roleDao.roleMenu(id, menuIds, buttonIds, (int)update_time);
 		if(r == 0)
 			throw new Exception("授权失败");
-		
+
 	}
 
 }

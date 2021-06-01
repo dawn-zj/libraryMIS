@@ -7,15 +7,12 @@ import cn.com.gs.common.util.cert.CertUtil;
 import cn.com.gs.common.util.crypto.KeyUtil;
 import cn.com.gs.common.util.crypto.RSAUtil;
 import cn.com.gs.common.util.date.DateUtil;
-import com.sun.corba.se.impl.orbutil.closure.Constant;
 import org.junit.Test;
 
 import java.security.KeyPair;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.cert.X509Certificate;
-import java.security.interfaces.RSAPrivateKey;
-import java.security.interfaces.RSAPublicKey;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
