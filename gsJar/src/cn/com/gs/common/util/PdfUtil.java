@@ -2,7 +2,10 @@ package cn.com.gs.common.util;
 
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 
 import cn.com.gs.common.define.Constants;
 import cn.com.gs.common.exception.NetGSRuntimeException;
@@ -36,7 +39,8 @@ public class PdfUtil {
 			Writer writer = new OutputStreamWriter(fos, "UTF-8");
 			PDFTextStripper stripper = new PDFTextStripper();
 			stripper.setSortByPosition(true);// 排序
-			stripper.setStartPage(1);;// 设置转换的开始页
+			stripper.setStartPage(1);
+			;// 设置转换的开始页
 			stripper.setEndPage(pagenumber);// 设置转换的结束页
 			stripper.writeText(doc, writer);
 			writer.close();
@@ -47,12 +51,39 @@ public class PdfUtil {
 		}
 	}
 
+	public static List getTemplateFields(byte[] pdfTemplateData) throws Exception {
+		PdfReader reader = null;
+		PdfStamper stamper = null;
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		try {
+			// 读取pdf模板
+			reader = new PdfReader(pdfTemplateData);
+
+			// 获取模板文本域
+			stamper = new PdfStamper(reader, bos);
+			AcroFields fields = stamper.getAcroFields();
+
+			Set<String> fieldNames = fields.getFields().keySet();
+			return new ArrayList<>(fieldNames);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			if (stamper != null)
+				stamper.close();
+
+			if (reader != null)
+				reader.close();
+		}
+	}
+
 	/**
 	 * 根据模板和内容生成新的pdf
+	 *
 	 * @param pdfTemplateData
 	 * @param pro
 	 */
-	public static byte[] genPdfByTemplate(byte[] pdfTemplateData, Properties pro)  throws Exception{
+	public static byte[] genPdfByTemplate(byte[] pdfTemplateData, Properties pro) throws Exception {
 		PdfReader reader = null;
 		PdfStamper stamper = null;
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -100,15 +131,16 @@ public class PdfUtil {
 
 	/**
 	 * 给pdf的指定页码和坐标添加图片
-	 * @param pdfData pdf文件
-	 * @param photoData 图片
+	 *
+	 * @param pdfData    pdf文件
+	 * @param photoData  图片
 	 * @param pageNumber 页码
-	 * @param x x坐标
-	 * @param y y坐标
-	 * @param w 图片宽度
-	 * @param h 图片高度
+	 * @param x          x坐标
+	 * @param y          y坐标
+	 * @param w          图片宽度
+	 * @param h          图片高度
 	 */
-	public static byte[] pdfAddImage(byte[] pdfData, byte[] photoData, int pageNumber, float x, float y, float w, float h) throws Exception{
+	public static byte[] pdfAddImage(byte[] pdfData, byte[] photoData, int pageNumber, float x, float y, float w, float h) throws Exception {
 		PdfReader reader = null;
 		PdfStamper stamper = null;
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -206,12 +238,15 @@ public class PdfUtil {
 
 	public static void main(String[] args) throws Exception {
 		// 根据模板制作pdf
-		byte[] pdfData = genPdfTest(Constants.FILE_PATH + "req_con.pdf");
-		FileUtil.storeFile(Constants.FILE_OUT_PATH + "个人信息.pdf", pdfData);
+		// byte[] pdfData = genPdfTest(Constants.FILE_PATH + "req_con.pdf");
+		// FileUtil.storeFile(Constants.FILE_OUT_PATH + "个人信息.pdf", pdfData);
+		//
+		// byte[] photoData = FileUtil.getFile(Constants.FILE_OUT_PATH + "gs_去底色.png");
+		// byte[] addImagePdf = pdfAddImage(pdfData, photoData, 1, 100, 100, 100, 100);
+		// FileUtil.storeFile(Constants.FILE_OUT_PATH + "个人信息_addImage.pdf", addImagePdf);
 
-		byte[] photoData = FileUtil.getFile(Constants.FILE_OUT_PATH + "gs_去底色.png");
-		byte[] addImagePdf = pdfAddImage(pdfData, photoData, 1, 100, 100, 100, 100);
-		FileUtil.storeFile(Constants.FILE_OUT_PATH + "个人信息_addImage.pdf", addImagePdf);
+		List list = getTemplateFields(FileUtil.getFile(Constants.FILE_PATH + "req_con.pdf"));
+		System.out.println(list);
 
 	}
 }
