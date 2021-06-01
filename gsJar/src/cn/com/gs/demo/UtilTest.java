@@ -67,24 +67,6 @@ public class UtilTest {
 	}
 
 	/**
-	 * x509证书解析
-	 */
-	@Test
-	public void certTest() throws Exception {
-		byte[] file = FileUtil.getFile(Constants.FILE_PATH + "ca.cer");
-		X509Certificate x509Certificate = CertUtil.getX509Certificate(file);
-		System.out.println(x509Certificate.getSubjectDN());
-	}
-
-	/**
-	 * 系统提供者
-	 */
-	@Test
-	public void providerTest() {
-		CertUtil.getAllProvider();
-	}
-
-	/**
 	 * 获取pdf模板文本域
 	 *
 	 * @throws Exception
@@ -158,12 +140,20 @@ public class UtilTest {
 		System.out.println("ok");
 	}
 
+	/**
+	 * 执行命令/脚本
+	 * @throws Exception
+	 */
 	@Test
 	public void execTest() throws Exception {
 		String ipconfig = ExecSh.exec("ipconfig");
 		System.out.println(ipconfig);
 	}
 
+	/**
+	 * 十六进制转换
+	 * @throws Exception
+	 */
 	@Test
 	public void hexTest() throws Exception {
 		long time = DateUtil.getCurrentTime();
@@ -172,11 +162,19 @@ public class UtilTest {
 		System.out.println(HexUtil.byte2Long(HexUtil.long2Byte(time)));
 	}
 
+	/**
+	 * 网卡MAC十六进制信息
+	 * @throws Exception
+	 */
 	@Test
 	public void getHostMacTest() throws Exception {
 		System.out.println(NetWorkUtil.getHostMac("eth0"));
 	}
 
+	/**
+	 * 系统监控信息
+	 * @throws Exception
+	 */
 	@Test
 	public void sigarTest() throws Exception {
 		Map<String, Object> systemData = SigarUtil.getInstance().getSystemData();
@@ -186,6 +184,28 @@ public class UtilTest {
 		}
 	}
 
+	/**
+	 * 系统提供者
+	 */
+	@Test
+	public void providerTest() {
+		CertUtil.getAllProvider();
+	}
+
+	/**
+	 * x509证书解析
+	 */
+	@Test
+	public void certTest() throws Exception {
+		byte[] file = FileUtil.getFile(Constants.FILE_PATH + "ca.cer");
+		X509Certificate x509Certificate = CertUtil.getX509Certificate(file);
+		System.out.println(x509Certificate.getSubjectDN());
+	}
+
+	/**
+	 * 生成RSA密钥对
+	 * @throws Exception
+	 */
 	@Test
 	public void genRsaKeyPairTest() throws Exception {
 		KeyPair kayPair = RSAUtil.genRSAKeyPair(Constants.RSA_KEY_SIZE_1024);
@@ -219,6 +239,10 @@ public class UtilTest {
 		System.out.println("解密完成，解密数据：" + new String(decrypt));
 	}
 
+	/**
+	 * RSA签名验签
+	 * @throws Exception
+	 */
 	@Test
 	public void rsaSignTest() throws Exception {
 		String plain = "plain";
