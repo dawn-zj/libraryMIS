@@ -10,7 +10,7 @@ public class Base64Util {
 //		String str1 = "son";
 //		byte[] b1 = encode(str1);
 //		System.out.println(new String(b1));
-		
+
 		//解码
 		String str2 = "c29u";
 		byte[] b2 = decode(str2);
@@ -19,7 +19,7 @@ public class Base64Util {
 
 	/**
 	 * 将指定字符串进行base64编码
-	 * 
+	 *
 	 * @param str
 	 *            字符串
 	 * @return 已被编码的byte[]
@@ -28,10 +28,10 @@ public class Base64Util {
 		Encoder enc = Base64.getEncoder();
 		return enc.encode(str.getBytes());
 	}
-	
+
 	/**
 	 * 将指定字节数组进行base64编码
-	 * 
+	 *
 	 * @param data
 	 *            字节数组
 	 * @return 已被编码的byte[]
@@ -43,7 +43,7 @@ public class Base64Util {
 
 	/**
 	 * 将被编码的字符串进行base64解码
-	 * 
+	 *
 	 * @param str
 	 *            字符串
 	 * @return 已解码的byte[]
@@ -55,7 +55,7 @@ public class Base64Util {
 
 	/**
 	 * 将被编码的字节数组进行base64解码
-	 * 
+	 *
 	 * @param data
 	 *            被编码的字节数组
 	 * @return 已解码的byte[]

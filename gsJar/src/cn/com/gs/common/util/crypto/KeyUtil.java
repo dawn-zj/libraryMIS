@@ -24,7 +24,7 @@ public class KeyUtil {
 
         switch (encAlg) {
             case Constants.RSA:
-                Cipher c = Cipher.getInstance("RSA/ECB/PKCS1Padding", "INFOSEC");
+                Cipher c = Cipher.getInstance("RSA/ECB/PKCS1Padding");
                 c.init(Cipher.ENCRYPT_MODE, pubKey);
                 return c.doFinal(value);
             case Constants.SM2:
@@ -50,7 +50,7 @@ public class KeyUtil {
 
         switch (encAlg) {
             case Constants.RSA:
-                Cipher c = Cipher.getInstance("RSA/ECB/PKCS1Padding", "INFOSEC");
+                Cipher c = Cipher.getInstance("RSA/ECB/PKCS1Padding");
                 c.init(Cipher.DECRYPT_MODE, priKey);
                 return c.doFinal(value);
             case Constants.SM2:

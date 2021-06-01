@@ -1,17 +1,22 @@
 package cn.com.gs.demo;
 
 import cn.com.gs.common.define.Constants;
-import cn.com.gs.common.util.FileUtil;
-import cn.com.gs.common.util.ImageUtil;
-import cn.com.gs.common.util.PdfUtil;
-import cn.com.gs.common.util.ZipUtil;
+import cn.com.gs.common.util.*;
 import cn.com.gs.common.util.base64.Base64Util;
 import cn.com.gs.common.util.cert.CertUtil;
+import cn.com.gs.common.util.crypto.KeyUtil;
+import cn.com.gs.common.util.crypto.RSAUtil;
 import cn.com.gs.common.util.date.DateUtil;
 import org.junit.Test;
 
+import java.security.KeyPair;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.security.cert.X509Certificate;
+import java.security.interfaces.RSAPrivateKey;
+import java.security.interfaces.RSAPublicKey;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 public class UtilTest {
@@ -155,4 +160,64 @@ public class UtilTest {
 		System.out.println("ok");
 	}
 
+	@Test
+	public void execTest() throws Exception {
+		String ipconfig = ExecSh.exec("ipconfig");
+		System.out.println(ipconfig);
+	}
+
+	@Test
+	public void hexTest() throws Exception {
+		long time = DateUtil.getCurrentTime();
+		System.out.println(time);
+		System.out.println(HexUtil.byte2Hex(HexUtil.long2Byte(time)));
+		System.out.println(HexUtil.byte2Long(HexUtil.long2Byte(time)));
+	}
+
+	@Test
+	public void getHostMacTest() throws Exception {
+		System.out.println(NetWorkUtil.getHostMac("eth0"));
+	}
+
+	@Test
+	public void sigarTest() throws Exception {
+		Map<String, Object> systemData = SigarUtil.getInstance().getSystemData();
+		for(String key : systemData.keySet()){
+			Object value = systemData.get(key);
+			System.out.println(key + ":" + value);
+		}
+	}
+
+	@Test
+	public void genRsaKeyPairTest() throws Exception {
+		KeyPair kayPair = RSAUtil.genRSAKeyPair(Constants.RSA_KEY_SIZE_1024);
+		PublicKey publicKey = kayPair.getPublic();
+		PrivateKey privateKey = kayPair.getPrivate();
+		//得到base64编码的公钥/私钥字符串
+		String publicKeyString = new String(Base64Util.encode(publicKey.getEncoded()));
+		String privateKeyString = new String(Base64Util.encode(privateKey.getEncoded()));
+		FileUtil.storeFile(Constants.FILE_OUT_PATH + "rsa/pubKey.txt", publicKeyString.getBytes());
+		FileUtil.storeFile(Constants.FILE_OUT_PATH + "rsa/priKey.txt", privateKeyString.getBytes());
+		System.out.println("RSA密钥对存储成功！");
+	}
+
+	/**
+	 * RSA非对称加解密
+	 * @throws Exception
+	 */
+	@Test
+	public void rsaEncryptTest() throws Exception {
+		String plain = "plain";
+		System.out.println("加密开始，原文数据：" + plain);
+		// 加载RSA公钥
+		byte[] pubKeyData = FileUtil.getFile(Constants.FILE_OUT_PATH + "rsa/pubKey.txt");
+		PublicKey publicKey = RSAUtil.generateP8PublicKey(Base64Util.decode(pubKeyData));
+		byte[] encrypt = KeyUtil.encryptWithPubKey(publicKey, plain.getBytes(), -1, "RSA");
+
+		// 加载RSA私钥
+		byte[] priKeyData = FileUtil.getFile(Constants.FILE_OUT_PATH + "rsa/priKey.txt");
+		PrivateKey privateKey = RSAUtil.generateP8PrivateKey(Base64Util.decode(priKeyData));
+		byte[] decrypt = KeyUtil.decryptWithPriKey(privateKey, encrypt, -1, "RSA");
+		System.out.println("解密完成，解密数据：" + new String(decrypt));
+	}
 }

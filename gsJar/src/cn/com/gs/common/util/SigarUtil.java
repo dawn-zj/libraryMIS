@@ -55,7 +55,7 @@ public class SigarUtil {
 	 *
 	 * @return
 	 */
-	private Map<String, Object> getSystemData() {
+	public Map<String, Object> getSystemData() {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		try {
 			FileSystemUsage usage = null;
