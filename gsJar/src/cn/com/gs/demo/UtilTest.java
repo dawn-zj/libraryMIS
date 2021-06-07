@@ -35,8 +35,20 @@ public class UtilTest {
 	 */
 	@Test
 	public void transferAlphaTest() {
+		// transferAlpha内部用画板重绘图片，对于网络图片可能会失真
 		byte[] photoData = ImageUtil.transferAlpha(Constants.FILE_PATH + "gs.png");
 		FileUtil.storeFile(Constants.FILE_OUT_PATH + "gs_去底色.png", photoData);
+		System.out.println("图片处理完毕！");
+	}
+
+	/**
+	 * 去白色背景或指定RGB
+	 */
+	@Test
+	public void cleanBGColorTest() throws Exception {
+		// cleanBGColor内部针对指定RGB进行处理，适用于大部分图片
+		byte[] photoData = ImageUtil.cleanBGColor(FileUtil.getFile(Constants.FILE_PATH + "bg_white.png"));
+		FileUtil.storeFile(Constants.FILE_OUT_PATH + "bg_white_去底色.png", photoData);
 		System.out.println("图片处理完毕！");
 	}
 

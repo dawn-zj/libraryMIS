@@ -26,6 +26,80 @@ import javax.swing.ImageIcon;
 public class ImageUtil {
 
 	/**
+	 * 去白色背景
+	 * @param bs
+	 * @return
+	 * @throws Exception
+	 */
+	public static byte[] cleanBGColor(byte[] bs) throws Exception {
+		int imgR = 255;
+		int imgG = 255;
+		int imgB = 255;
+		ByteArrayInputStream bais = new ByteArrayInputStream(bs);
+		BufferedImage bi = ImageIO.read(bais);
+		BufferedImage tmp = new BufferedImage(bi.getWidth(), bi.getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
+		for (int i = 0, width = bi.getWidth(); i < width; i++) {
+			for (int j = 0, height = bi.getHeight(); j < height; j++) {
+				int rgb = bi.getRGB(i, j);
+
+				byte[] d = HexUtil.int2Byte(rgb);
+				int a = d[0] & 0xff;
+				int r = d[1] & 0xff;
+				int g = d[2] & 0xff;
+				int b = d[3] & 0xff;
+				if (r == imgR && g == imgG && b == imgB) { // 白色rgb(255,255,255)
+					d[0] = 0; // 将白色背景改为透明
+					rgb = HexUtil.byte2Int(d);
+				}
+
+				tmp.setRGB(i, j, rgb);
+			}
+		}
+
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		ImageIO.write(tmp, "png", baos);
+
+		return baos.toByteArray();
+	}
+
+	/**
+	 * 去除指定RGB背景
+	 * @param bs 图片
+	 * @param imgR R
+	 * @param imgG G
+	 * @param imgB B
+	 * @return
+	 * @throws Exception
+	 */
+	public static byte[] cleanBGColor(byte[] bs, int imgR, int imgG, int imgB) throws Exception {
+		ByteArrayInputStream bais = new ByteArrayInputStream(bs);
+		BufferedImage bi = ImageIO.read(bais);
+		BufferedImage tmp = new BufferedImage(bi.getWidth(), bi.getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
+		for (int i = 0, width = bi.getWidth(); i < width; i++) {
+			for (int j = 0, height = bi.getHeight(); j < height; j++) {
+				int rgb = bi.getRGB(i, j);
+
+				byte[] d = HexUtil.int2Byte(rgb);
+				int a = d[0] & 0xff;
+				int r = d[1] & 0xff;
+				int g = d[2] & 0xff;
+				int b = d[3] & 0xff;
+				if (r == imgR && g == imgG && b == imgB) {
+					d[0] = 0; // 将指定rgb背景改为透明
+					rgb = HexUtil.byte2Int(d);
+				}
+
+				tmp.setRGB(i, j, rgb);
+			}
+		}
+
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		ImageIO.write(tmp, "png", baos);
+
+		return baos.toByteArray();
+	}
+
+	/**
 	 * 处理图片红字颜色透明度
 	 *
 	 * @param bs    图片数据
@@ -92,7 +166,7 @@ public class ImageUtil {
 	}
 
 	/**
-	 * 调整图片为透明背景，暂只支持红色字体去背景
+	 * 调整图片为透明背景
 	 *
 	 * @param sourcePhotoPath 原图片路径
 	 * @return
