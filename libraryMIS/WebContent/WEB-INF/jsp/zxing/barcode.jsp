@@ -29,7 +29,7 @@ $(function(){
 		if(content==""){
 			return false;
 		}
-		$("#barcodeImg img").attr("src","${ctx}/barcode/genImage.do?content="+content);
+		$("#barcodeImg img").attr("src","${ctx}/tool/barcode/genImage.do?content="+content);
 	});
 });
 $(function(){

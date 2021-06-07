@@ -130,25 +130,25 @@ INSERT INTO `gs_menu` VALUES ('120000', '系统管理', '#', '-1', 'Hui-iconfont
 INSERT INTO `gs_menu` VALUES ('130000', '工具管理', '#', '-1', 'Hui-iconfont-manage2', null, null, null, null);
 INSERT INTO `gs_menu` VALUES ('140000', '日志管理', '#', '-1', 'Hui-iconfont-manage2', null, null, null, null);
 
---用户管理
+-- 用户管理
 INSERT INTO `gs_menu` VALUES ('100100', '管理员管理', '/sysUser/sysUserList.do', '100000', null, null, null, null, null);
 INSERT INTO `gs_menu` VALUES ('100101', '管理员管理', '#', '100100', null, null, null, null, null);
 
 INSERT INTO `gs_menu` VALUES ('100200', '角色管理', '/role/roleList.do', '100000', null, null, null, null, null);
 INSERT INTO `gs_menu` VALUES ('100201', '角色管理', '#', '100200', null, null, null, null, null);
 
---图书管理
+-- 图书管理
 INSERT INTO `gs_menu` VALUES ('110100', '图书管理', '/book/bookList.do', '110000', null, null, null, null, null);
 INSERT INTO `gs_menu` VALUES ('110101', '图书管理', '#', '110100', null, null, null, null, null);
 
---系统管理
+-- 系统管理
 INSERT INTO `gs_menu` VALUES ('120100', '系统设置', '/system/systemManage.do', '120000', null, null, null, null, null);
 INSERT INTO `gs_menu` VALUES ('120101', '系统设置', '#', '120100', null, null, null, null, null);
 
 INSERT INTO `gs_menu` VALUES ('120200', '数据字典', '/system/dictionaryList.do', '120000', null, null, null, null, null);
 INSERT INTO `gs_menu` VALUES ('120201', '数据字典', '#', '120200', null, null, null, null, null);
 
---工具管理
+-- 工具管理
 INSERT INTO `gs_menu` VALUES ('130100', '在线二维码', '/tool/barcode/barcodeManage.do', '130000', null, null, null, null, null);
 INSERT INTO `gs_menu` VALUES ('130101', '在线二维码', '#', '130100', null, null, null, null, null);
 
@@ -162,7 +162,7 @@ INSERT INTO `gs_menu` VALUES ('130302', 'Base64解码', '/tool/base64/toBase64De
 INSERT INTO `gs_menu` VALUES ('130400', '拾色器', '/tool/colorpicker/toColorpicker.do', '130000', null, null, null, null, null);
 INSERT INTO `gs_menu` VALUES ('130401', '拾色器', '#', '130400', null, null, null, null, null);
 
---日志管理
+-- 日志管理
 INSERT INTO `gs_menu` VALUES ('140100', '错误日志', '/log/errorLogList.do', '140000', null, null, null, null, null);
 INSERT INTO `gs_menu` VALUES ('140101', '错误日志', '#', '140100', null, null, null, null, null);
 
