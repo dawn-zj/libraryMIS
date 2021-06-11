@@ -1,22 +1,22 @@
 package cn.com.gs.common.util;
 
 import java.math.BigInteger;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 import cn.com.gs.common.define.Constants;
 import cn.com.gs.common.exception.NetGSRuntimeException;
 import cn.com.gs.common.resource.ErrCode;
+import cn.com.gs.common.util.text.StrFormatter;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+
+import static org.apache.commons.lang3.ArrayUtils.isEmpty;
 
 public class StringUtil {
 
 	/**
 	 * 将指定字符串转换为整数类型, 若为空或者格式不正确,则使用默认值
-	 * 
+	 *
 	 * @param sValue
 	 *            要转换的字符串
 	 * @param defaultValue
@@ -37,7 +37,7 @@ public class StringUtil {
 
 	/**
 	 * 将指定字符串去除两端的空格, 若为空或者格式不正确,则使用默认值
-	 * 
+	 *
 	 * @param sValue
 	 *            要去除空格的字符串
 	 * @param defaultValue
@@ -54,7 +54,7 @@ public class StringUtil {
 
 	/**
 	 * 将指定字符串转成字节数组
-	 * 
+	 *
 	 * @param str
 	 *            字符串
 	 * @return byte[]
@@ -80,7 +80,7 @@ public class StringUtil {
 
 	/**
 	 * 将字节数组转成字符串
-	 * 
+	 *
 	 * @param data
 	 *            字节数组
 	 * @return byte[]
@@ -95,7 +95,7 @@ public class StringUtil {
 
 	/**
 	 * 去除字符串
-	 * 
+	 *
 	 * @param src：1
 	 * @param delStr：1
 	 * @param addStr：1
@@ -118,7 +118,7 @@ public class StringUtil {
 
 	/**
 	 * 判断字符串为空
-	 * 
+	 *
 	 * @param str
 	 *            要判断的字符串
 	 * @return boolean
@@ -133,7 +133,7 @@ public class StringUtil {
 
 	/**
 	 * 判断字符串不为空
-	 * 
+	 *
 	 * @param str
 	 *            要判断的字符串
 	 * @return boolean
@@ -147,7 +147,7 @@ public class StringUtil {
 
 	/**
 	 * 返回指定长度的数组, 不够左补0x00, 超过从左开始截取
-	 * 
+	 *
 	 * @param bs
 	 * @param len
 	 * @return
@@ -171,7 +171,7 @@ public class StringUtil {
 
 	/**
 	 * 返回指定长度的数组, 不够返回原始数组, 超过从左开始截取
-	 * 
+	 *
 	 * @param bs
 	 * @param len
 	 * @return
@@ -190,14 +190,14 @@ public class StringUtil {
 
 	/**
 	 * 去掉补位
-	 * 
+	 *
 	 * @param bs
 	 * @return
 	 */
 	public static byte[] clearPad(byte[] bs) {
 		return new BigInteger(bs).toByteArray();
 	}
-	
+
 	/**
 	 * 将map转为json字符串
 	 * @param map
@@ -205,7 +205,7 @@ public class StringUtil {
 	public static String mapToJson(Map<Object,Object> map) {
 		return JSONArray.fromObject(map).toString();
 	}
-	
+
 	/**
 	 * 将数组转为指定class类型
 	 * @param array
@@ -217,7 +217,7 @@ public class StringUtil {
 		T obj = (T)JSONObject.toBean(jsonObject, cls);
 		return obj;
 	}
-	
+
 	/**
 	 * 将json字符串转为指定class类型
 	 * @param json
@@ -260,5 +260,76 @@ public class StringUtil {
 			rs.append(r.nextInt(10));
 		}
 		return rs.toString();
+	}
+
+	/**
+	 * * 判断一个对象是否为空
+	 *
+	 * @param object Object
+	 * @return true：为空 false：非空
+	 */
+	public static boolean isNull(Object object) {
+		return object == null;
+	}
+
+	/**
+	 * * 判断一个对象是否非空
+	 *
+	 * @param object Object
+	 * @return true：非空 false：空
+	 */
+	public static boolean isNotNull(Object object) {
+		return !isNull(object);
+	}
+
+	/**
+	 * * 判断一个字符串是否为空串
+	 *
+	 * @param str String
+	 * @return true：为空 false：非空
+	 */
+	public static boolean isEmpty(String str) {
+		return isNull(str) || "".equals(str.trim());
+	}
+
+	/**
+	 * * 判断一个字符串是否为非空串
+	 *
+	 * @param str String
+	 * @return true：非空串 false：空串
+	 */
+	public static boolean isNotEmpty(String str) {
+		return !isEmpty(str);
+	}
+
+	/**
+	 * * 判断一个对象数组是否为空
+	 *
+	 * @param objects 要判断的对象数组
+	 *                * @return true：为空 false：非空
+	 */
+	public static boolean isEmpty(Object[] objects) {
+		return isNull(objects) || (objects.length == 0);
+	}
+
+	/**
+	 * * 判断一个对象数组是否非空
+	 *
+	 * @param objects 要判断的对象数组
+	 * @return true：非空 false：空
+	 */
+	public static boolean isNotEmpty(Object[] objects) {
+		return !isEmpty(objects);
+	}
+
+	public static String format(String pattern, Object... params) {
+		if (isEmpty(params) || isEmpty(params)) {
+			return pattern;
+		}
+		return StrFormatter.format(pattern, params);
+	}
+
+	public static void main(String[] args) {
+		System.out.println(format("This is {} and {}", "a", "b"));
 	}
 }
