@@ -36,6 +36,8 @@ public class Constants {
 
 	public static final int RSA_KEY_SIZE_1024 = 1024;
 
+	public static final long LENGTH_5MB = 5 * 1024 * 1024L; // 5MB
+
 	//日志类型
 	public static final String LOG_OPTYPE_SYSUSER_LOGIN = "LOG_OPTYPE_SYSUSER_LOGIN";
 	//邮件
