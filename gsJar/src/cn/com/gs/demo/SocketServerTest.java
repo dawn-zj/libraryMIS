@@ -22,6 +22,9 @@ public class SocketServerTest {
         Socket socket = server.accept();
         // 3. 接收客户端消息，并回复
         BasicCommunicator communicator = new BasicCommunicator(socket);
+
+        // todo 整合实际业务，编写一个处理器，将请求转到实际业务层，并拿到业务层处理结果，响应给客户端
+        // 参考NetSeal AppServer 的 SocketListener和SocketConnectionHandler
         byte[] recv = communicator.recv();
         System.out.println("服务端接收到的信息：" + StringUtil.getString(recv));
 
