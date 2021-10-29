@@ -160,30 +160,31 @@ public class PdfUtil {
 			float widthPage = document.getPageSize().getWidth();
 			float heightPage = document.getPageSize().getHeight();
 
-			// TODO Image相关内容
-			BufferedImage sourceImg = ImageIO.read(new ByteArrayInputStream(photoData));
-			float widthImage = sourceImg.getWidth() * 72f / 96;
-			float heightImage = sourceImg.getHeight() * 72f / 96;
-
+			// Image处理
 			Image img = Image.getInstance(photoData);
-			img.scaleAbsoluteWidth(sourceImg.getWidth());
-			img.scaleAbsoluteHeight(sourceImg.getHeight());
+			if (w == 0) {
+				w = img.getWidth() * 72f / 96;
+			}
+			if (h == 0) {
+				h = img.getHeight() * 72f / 96;
+			}
+			// 自定义图片大小
+			img.scaleAbsoluteWidth(w);
+			img.scaleAbsoluteHeight(h);
 			// 坐标越界处理
-			if (x < 0)
-				x = 0;
-			if (x >= widthPage)
-				x = widthPage - widthImage;
-			if (y < 0)
-				y = 0;
-			if (y >= heightPage)
-				y = heightPage - heightImage;
+			x = x < 0 ? 0 : x;
+			x = x >= (widthPage - w) ? widthPage - w : x;
+			y = y < 0 ? 0 : y;
+			y = y > (heightPage - h) ? heightPage - h : y;
 
 			img.setAbsolutePosition(x, y);
 
 			// 获取该页码的内容
 			PdfContentByte content = stamper.getOverContent(pageNumber);
-			if (content == null)
+			if(content == null) {
 				throw new NetGSRuntimeException("page number " + pageNumber + " out of range");
+			}
+			// 添加图片
 			content.addImage(img);
 			stamper.close();
 
