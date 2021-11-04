@@ -22,6 +22,7 @@ public class FilePathChecker {
 		list.add(Constants.TXT_SUFFIX);
 		list.add(Constants.CONF_SUFFIX);
 		list.add(Constants.CER_SUFFIX);
+		list.add(Constants.PFX_SUFFIX);
 
 		// 日志文件后缀
 		for (int i = 0; i < 10; i++)

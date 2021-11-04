@@ -1,9 +1,10 @@
-package cn.com.gs.common.util;
+package cn.com.gs.common.util.pkcs;
 
 import cn.com.gs.common.define.Constants;
+import cn.com.gs.common.util.FileUtil;
+import cn.com.gs.common.util.HexUtil;
 import cn.com.gs.common.util.crypto.KeyUtil;
 import cn.com.gs.common.util.crypto.SM4Util;
-import org.apache.commons.lang3.StringUtils;
 import org.bouncycastle.asn1.*;
 import org.junit.Test;
 

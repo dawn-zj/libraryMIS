@@ -12,6 +12,9 @@ public class Constants {
 	public static final String SPOT = ".";
 	public static final String DEFAULT_STRING = "";
 
+	// 密钥
+	public static final String PFX_SUFFIX = ".pfx"; // 密钥后缀
+	// 文件
 	public static final String PHOTO_SUFFIX = ".png"; // 图片后缀
 	public static final String PDF_SUFFIX = ".pdf"; // pdf后缀
 	public static final String ZIP_SUFFIX = ".zip"; // 压缩文件后缀
@@ -20,6 +23,7 @@ public class Constants {
 	public static final String CONF_SUFFIX = ".properties"; // properties文件后缀
 	public static final String CER_SUFFIX = ".cer"; // cert文件后缀
 
+	// 项目资源
 	public static final String CONTEXT_PATH = "E:/Idea/GS/library/src/gsJar";// 项目目录相对路径
 	public static final String FILE_PATH = CONTEXT_PATH + "/file/";// 项目内测文件相对路径
 	public static final String FILE_OUT_PATH = CONTEXT_PATH + "/file/out/";// 项目内测输出文件相对路径
