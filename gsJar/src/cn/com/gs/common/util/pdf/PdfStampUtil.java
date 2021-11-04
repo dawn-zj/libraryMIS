@@ -77,8 +77,6 @@ public class PdfStampUtil {
         float uy = y + imageHeight;
         sap.setVisibleSignature(new Rectangle(x, y, ux, uy), 1, StringUtil.genDigitRandom(10));
 
-        // todo 印章相关。。。目前签出的文件，数科无法验证
-
         // 2.摘要算法
         ExternalDigest digest = new BouncyCastleDigest();
         // 3.签名算法
