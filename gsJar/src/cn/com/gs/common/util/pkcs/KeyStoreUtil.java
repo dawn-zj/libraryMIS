@@ -15,6 +15,14 @@ import java.util.Enumeration;
  * @Description
  */
 public class KeyStoreUtil {
+    /**
+     * 加载私钥
+     * @param keyPwd 密码
+     * @param keyMode 密钥类型
+     * @param keyData 密钥数据
+     * @return
+     * @throws Exception
+     */
     public static PrivateKey loadKey(String keyPwd, String keyMode, byte[] keyData) throws Exception {
         KeyStore ks = null;
         PrivateKey priKey = null;

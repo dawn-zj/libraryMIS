@@ -1,7 +1,6 @@
 package cn.com.gs.common.util.pdf;
 
 import cn.com.gs.common.define.Constants;
-import cn.com.gs.common.entity.SignatureInfo;
 import cn.com.gs.common.util.FileUtil;
 import cn.com.gs.common.util.StringUtil;
 import com.itextpdf.text.Image;
@@ -28,25 +27,27 @@ import java.security.cert.Certificate;
  */
 public class PdfStampUtil {
     /**
-     * 图片分辨率，分辨率越高，图片越小越清晰
-     */
-    public static Integer dpi = 96;
-
-    /**
      * keystore密码
      */
-    public static String PASSWORD = "11111111";
+    public static String password = "11111111";
 
     public static String pfxPath = Constants.FILE_PATH + "/key/rsa/rsapfx3des-sha1.pfx";
 
     /**
-     * 签章
-     * @param pdfData PDF数据
-     * @param signatureInfo 签章信息
+     * 添加图片并签名
+     * @param pdfData pdf数据
+     * @param photoData 图片数据
+     * @param pageNumber 页码
+     * @param x x坐标
+     * @param y y坐标
+     * @param chain 证书链
+     * @param privateKey 私钥
+     * @param hashAlg 摘要算法
      * @return
      * @throws Exception
      */
-    public byte[] sign(byte[] pdfData, SignatureInfo signatureInfo) throws Exception {
+    public byte[] sign(byte[] pdfData, byte[] photoData, int pageNumber, float x, float y,
+                       Certificate[] chain, PrivateKey privateKey, String hashAlg) throws Exception {
         PdfReader reader = new PdfReader(pdfData);
 
         /*
@@ -62,27 +63,25 @@ public class PdfStampUtil {
         // 1.设置PdfSignatureAppearance
         PdfSignatureAppearance sap = stamper.getSignatureAppearance();
         // 1.1设置图章图片
-        Image image = Image.getInstance(signatureInfo.getImagePath());
+        Image image = Image.getInstance(photoData);
         sap.setSignatureGraphic(image);
         // 1.2设置图章的显示方式，这里是GRAPHIC只显示图章（还有其他的模式，可以图章和签名描述一同显示），不设置默认是展示描述
         sap.setRenderingMode(PdfSignatureAppearance.RenderingMode.GRAPHIC);
         // 1.3设置图章位置，页码，签名域名称，多次追加签名的时候，签名预名称不能一样 图片大小受表单域大小影响（过小导致压缩）
         // 签名的坐标，是图章相对于pdf页面的位置坐标，原点为pdf页面左下角
         // 四个参数的分别是，图章左下角x，图章左下角y，图章右上角x，图章右上角y
-        float imageWidth = image.getWidth() * 72f / dpi;
-        float imageHeight = image.getHeight() * 72f / dpi;
-        float x = signatureInfo.getX();
-        float y = signatureInfo.getY();
+        float imageWidth = image.getWidth() * 72f / Constants.DPI;
+        float imageHeight = image.getHeight() * 72f / Constants.DPI;
         float ux = x + imageWidth;
         float uy = y + imageHeight;
-        sap.setVisibleSignature(new Rectangle(x, y, ux, uy), 1, StringUtil.genDigitRandom(10));
+        sap.setVisibleSignature(new Rectangle(x, y, ux, uy), pageNumber, StringUtil.genDigitRandom(10));
 
         // 2.摘要算法
         ExternalDigest digest = new BouncyCastleDigest();
         // 3.签名算法
-        ExternalSignature signature = new PrivateKeySignature(signatureInfo.getPrivateKey(), signatureInfo.getHashAlgorithm(), null);
+        ExternalSignature signature = new PrivateKeySignature(privateKey, hashAlg, null);
         // 签章
-        MakeSignature.signDetached(sap, digest, signature, signatureInfo.getChain(),
+        MakeSignature.signDetached(sap, digest, signature, chain,
                 null, null, null, 0, MakeSignature.CryptoStandard.CADES);
 
         stamper.close();
@@ -96,24 +95,17 @@ public class PdfStampUtil {
             PdfStampUtil app = new PdfStampUtil();
             // 读取keystore ，获得私钥
             KeyStore ks = KeyStore.getInstance("PKCS12");
-            ks.load(new FileInputStream(pfxPath), PASSWORD.toCharArray());
+            ks.load(new FileInputStream(pfxPath), password.toCharArray());
             String alias = ks.aliases().nextElement();
-            PrivateKey pk = (PrivateKey) ks.getKey(alias, PASSWORD.toCharArray());
+            PrivateKey pk = (PrivateKey) ks.getKey(alias, password.toCharArray());
             // 得到证书链
             Certificate[] chain = ks.getCertificateChain(alias);
-            // 封装签章信息
-            SignatureInfo signInfo = new SignatureInfo();
-            // 必填项：图片，坐标，私钥、证书链、摘要算法
-            signInfo.setImagePath(Constants.FILE_PATH + "999.png");
-            signInfo.setX(100);
-            signInfo.setY(200);
-            signInfo.setPrivateKey(pk);
-            signInfo.setChain(chain);
-            signInfo.setHashAlgorithm(DigestAlgorithms.SHA1);
 
-            //签章后的pdf路径
-            byte[] bytes = app.sign(FileUtil.getFile(Constants.FILE_PATH + "/2页.pdf"), signInfo);
-            FileUtil.storeFile(Constants.FILE_OUT_PATH + "stamp.pdf", bytes);
+            //签章
+            byte[] pdfData = FileUtil.getFile(Constants.FILE_PATH + "2页.pdf");
+            byte[] photoData = FileUtil.getFile(Constants.FILE_PATH + "999.png");
+            byte[] signedData = app.sign(pdfData, photoData,1,100, 200, chain, pk, DigestAlgorithms.SHA1);
+            FileUtil.storeFile(Constants.FILE_OUT_PATH + "stamp.pdf", signedData);
         } catch (Exception e) {
             e.printStackTrace();
         }

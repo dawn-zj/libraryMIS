@@ -7,11 +7,17 @@ import cn.com.gs.common.util.cert.CertUtil;
 import cn.com.gs.common.util.crypto.KeyUtil;
 import cn.com.gs.common.util.crypto.RSAUtil;
 import cn.com.gs.common.util.date.DateUtil;
+import cn.com.gs.common.util.pdf.PdfStampUtil;
+import cn.com.gs.common.util.pkcs.KeyStoreUtil;
+import com.itextpdf.text.pdf.security.DigestAlgorithms;
 import org.junit.Test;
 
+import java.io.FileInputStream;
 import java.security.KeyPair;
+import java.security.KeyStore;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
 import java.util.List;
 import java.util.Map;
@@ -269,5 +275,43 @@ public class UtilTest {
 		PublicKey publicKey = RSAUtil.generateP8PublicKey(Base64Util.decode(pubKeyData));
 		boolean result = KeyUtil.signVerifyWithPubKey(publicKey, plain.getBytes(), signed, -1, Constants.SHA256_RSA, "1".getBytes());
 		System.out.println("验签完成，验签结果：" + result);
+	}
+
+	/**
+	 * 加载私钥
+	 * @throws Exception
+	 */
+	@Test
+	public void loadKeyTest() throws Exception {
+		String password = "11111111";
+		String pfxPath = Constants.FILE_PATH + "/key/rsa/rsapfx3des-sha1.pfx";
+		PrivateKey pk = KeyStoreUtil.loadKey(password, Constants.PFX_SUFFIX, FileUtil.getFile(pfxPath));
+		System.out.println("签名算法：" + pk.getAlgorithm());
+	}
+
+	/**
+	 * pdf签章
+	 * @throws Exception
+	 */
+	@Test
+	public void pdfStampTest() throws Exception {
+		String password = "11111111";
+		String pfxPath = Constants.FILE_PATH + "/key/rsa/rsapfx3des-sha1.pfx";
+
+		PdfStampUtil app = new PdfStampUtil();
+		// 读取keystore ，获得私钥
+		KeyStore ks = KeyStore.getInstance("PKCS12");
+		ks.load(new FileInputStream(pfxPath), password.toCharArray());
+		String alias = ks.aliases().nextElement();
+		PrivateKey pk = (PrivateKey) ks.getKey(alias, password.toCharArray());
+		// 得到证书链
+		Certificate[] chain = ks.getCertificateChain(alias);
+
+		//签章
+		byte[] pdfData = FileUtil.getFile(Constants.FILE_PATH + "2页.pdf");
+		byte[] photoData = FileUtil.getFile(Constants.FILE_PATH + "999.png");
+		byte[] signedData = app.sign(pdfData, photoData,1,100, 100, chain, pk, DigestAlgorithms.SHA1);
+		FileUtil.storeFile(Constants.FILE_OUT_PATH + "stamp.pdf", signedData);
+		System.out.println("签章成功，文件存储路径为：" + Constants.FILE_OUT_PATH + "stamp.pdf");
 	}
 }

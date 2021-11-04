@@ -1,7 +1,5 @@
 package cn.com.gs.common.define;
 
-import cn.com.gs.common.util.FileUtil;
-
 public class Constants {
 
 	public static final String VERISON = "version1.0"; // 系统版本号统一出处
@@ -42,9 +40,12 @@ public class Constants {
 
 	public static final long LENGTH_5MB = 5 * 1024 * 1024L; // 5MB
 
-	//日志类型
+	// 图片分辨率，分辨率越高，图片越小越清晰
+	public static final int DPI = 96;
+
+	// 日志类型
 	public static final String LOG_OPTYPE_SYSUSER_LOGIN = "LOG_OPTYPE_SYSUSER_LOGIN";
-	//邮件
+	// 邮件
 	public static final String Email_Account = "867096367@qq.com";//3385528945
 	public static final String Email_Authz_Password = "wxpqpjeklcsvbgag";//zj19970818 授权码
 
