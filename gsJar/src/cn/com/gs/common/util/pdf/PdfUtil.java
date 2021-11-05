@@ -1,6 +1,5 @@
-package cn.com.gs.common.util;
+package cn.com.gs.common.util.pdf;
 
-import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,17 +9,13 @@ import java.util.Set;
 import cn.com.gs.common.define.Constants;
 import cn.com.gs.common.exception.NetGSRuntimeException;
 import cn.com.gs.common.resource.ErrCode;
+import cn.com.gs.common.util.FileUtil;
 import cn.com.gs.common.util.date.DateUtil;
-import cn.com.gs.common.util.logger.LoggerUtil;
 import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.pdf.*;
-import com.sun.javaws.exceptions.BadMimeTypeResponseException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.util.PDFTextStripper;
-
-import javax.imageio.ImageIO;
 
 public class PdfUtil {
 

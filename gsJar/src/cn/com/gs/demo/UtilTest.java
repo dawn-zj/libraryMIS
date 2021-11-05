@@ -8,6 +8,7 @@ import cn.com.gs.common.util.crypto.KeyUtil;
 import cn.com.gs.common.util.crypto.RSAUtil;
 import cn.com.gs.common.util.date.DateUtil;
 import cn.com.gs.common.util.pdf.PdfStampUtil;
+import cn.com.gs.common.util.pdf.PdfUtil;
 import cn.com.gs.common.util.pkcs.KeyStoreUtil;
 import com.itextpdf.text.pdf.security.DigestAlgorithms;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
