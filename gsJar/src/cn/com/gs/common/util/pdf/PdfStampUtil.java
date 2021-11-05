@@ -1,40 +1,34 @@
 package cn.com.gs.common.util.pdf;
 
 import cn.com.gs.common.define.Constants;
-import cn.com.gs.common.util.FileUtil;
+import cn.com.gs.common.exception.NetGSRuntimeException;
 import cn.com.gs.common.util.StringUtil;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.Rectangle;
-import com.itextpdf.text.pdf.PdfReader;
-import com.itextpdf.text.pdf.PdfSignatureAppearance;
-import com.itextpdf.text.pdf.PdfStamper;
-import com.itextpdf.text.pdf.security.BouncyCastleDigest;
-import com.itextpdf.text.pdf.security.DigestAlgorithms;
-import com.itextpdf.text.pdf.security.ExternalDigest;
-import com.itextpdf.text.pdf.security.ExternalSignature;
-import com.itextpdf.text.pdf.security.MakeSignature;
-import com.itextpdf.text.pdf.security.PrivateKeySignature;
+import com.itextpdf.text.pdf.*;
+import com.itextpdf.text.pdf.security.*;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
-import java.security.KeyStore;
 import java.security.PrivateKey;
+import java.security.Security;
 import java.security.cert.Certificate;
+import java.util.ArrayList;
 
 /**
  * 参考文章：https://blog.csdn.net/tomatocc/article/details/80762507
  * @author Administator
  */
 public class PdfStampUtil {
-    /**
-     * keystore密码
-     */
-    public static String password = "11111111";
 
-    public static String pfxPath = Constants.FILE_PATH + "/key/rsa/rsapfx3des-sha1.pfx";
+    static {
+        if (Security.getProvider(BouncyCastleProvider.PROVIDER_NAME) == null) {
+            Security.addProvider(new BouncyCastleProvider());
+        }
+    }
 
     /**
-     * 添加图片并签名
+     * PDF添加图片并签名
      * @param pdfData pdf数据
      * @param photoData 图片数据
      * @param pageNumber 页码
@@ -90,25 +84,31 @@ public class PdfStampUtil {
 
     }
 
-    public static void main(String[] args) {
-        try {
-            PdfStampUtil app = new PdfStampUtil();
-            // 读取keystore ，获得私钥
-            KeyStore ks = KeyStore.getInstance("PKCS12");
-            ks.load(new FileInputStream(pfxPath), password.toCharArray());
-            String alias = ks.aliases().nextElement();
-            PrivateKey pk = (PrivateKey) ks.getKey(alias, password.toCharArray());
-            // 得到证书链
-            Certificate[] chain = ks.getCertificateChain(alias);
+    /**
+     * PDF验签名
+     * @param pdfData
+     * @return
+     * @throws Exception
+     */
+    public boolean verifySign(byte[] pdfData) throws Exception {
+        PdfReader reader = new PdfReader(pdfData);
+        AcroFields fields = reader.getAcroFields();
+        ArrayList<String> names = fields.getSignatureNames();
+        for (int i = 0, size = names.size(); i < size; i++) {
+            String signName = (String) names.get(i);
+            PdfDictionary dictionary = fields.getSignatureDictionary(signName);
 
-            //签章
-            byte[] pdfData = FileUtil.getFile(Constants.FILE_PATH + "2页.pdf");
-            byte[] photoData = FileUtil.getFile(Constants.FILE_PATH + "999.png");
-            byte[] signedData = app.sign(pdfData, photoData,1,100, 200, chain, pk, DigestAlgorithms.SHA1);
-            FileUtil.storeFile(Constants.FILE_OUT_PATH + "stamp.pdf", signedData);
-        } catch (Exception e) {
-            e.printStackTrace();
+            PdfName sub = dictionary.getAsName(PdfName.SUBFILTER);
+            if (PdfName.ETSI_CADES_DETACHED.equals(sub)) {
+                PdfPKCS7 pkcs7 = fields.verifySignature(signName);
+                return pkcs7.verify();
+
+            } else {
+                throw new NetGSRuntimeException("暂不支持的SubFilter类型：" + sub);
+            }
         }
+        return false;
     }
+
 }
 

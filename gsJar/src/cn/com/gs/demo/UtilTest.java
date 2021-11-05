@@ -10,13 +10,11 @@ import cn.com.gs.common.util.date.DateUtil;
 import cn.com.gs.common.util.pdf.PdfStampUtil;
 import cn.com.gs.common.util.pkcs.KeyStoreUtil;
 import com.itextpdf.text.pdf.security.DigestAlgorithms;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.junit.Test;
 
 import java.io.FileInputStream;
-import java.security.KeyPair;
-import java.security.KeyStore;
-import java.security.PrivateKey;
-import java.security.PublicKey;
+import java.security.*;
 import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
 import java.util.List;
@@ -207,7 +205,8 @@ public class UtilTest {
 	 */
 	@Test
 	public void providerTest() {
-		CertUtil.getAllProvider();
+		// CertUtil.getAllProvider();
+		System.out.println(Security.getProvider(BouncyCastleProvider.PROVIDER_NAME));
 	}
 
 	/**
@@ -298,7 +297,7 @@ public class UtilTest {
 		String password = "11111111";
 		String pfxPath = Constants.FILE_PATH + "/key/rsa/rsapfx3des-sha1.pfx";
 
-		PdfStampUtil app = new PdfStampUtil();
+		PdfStampUtil pdfUtil = new PdfStampUtil();
 		// 读取keystore ，获得私钥
 		KeyStore ks = KeyStore.getInstance("PKCS12");
 		ks.load(new FileInputStream(pfxPath), password.toCharArray());
@@ -310,8 +309,16 @@ public class UtilTest {
 		//签章
 		byte[] pdfData = FileUtil.getFile(Constants.FILE_PATH + "2页.pdf");
 		byte[] photoData = FileUtil.getFile(Constants.FILE_PATH + "999.png");
-		byte[] signedData = app.sign(pdfData, photoData,1,100, 100, chain, pk, DigestAlgorithms.SHA1);
+		byte[] signedData = pdfUtil.sign(pdfData, photoData,1,100, 100, chain, pk, DigestAlgorithms.SHA1);
 		FileUtil.storeFile(Constants.FILE_OUT_PATH + "stamp.pdf", signedData);
 		System.out.println("签章成功，文件存储路径为：" + Constants.FILE_OUT_PATH + "stamp.pdf");
+	}
+
+	@Test
+	public void pdfVerifyTest() throws Exception {
+		byte[] pdfData = FileUtil.getFile(Constants.FILE_OUT_PATH + "stamp.pdf");
+		PdfStampUtil pdfUtil = new PdfStampUtil();
+		boolean verify = pdfUtil.verifySign(pdfData);
+		System.out.println("验签结果：" + verify);
 	}
 }
