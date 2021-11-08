@@ -19,7 +19,7 @@
 	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="location">
 			<!-- <value>classpath:database.properties</value> -->
-			<value>file:E:/GSConf/conf/config.properties</value>
+			<value>file:/opt/zj/gs/conf/config.properties</value>
 		</property>
 	</bean>
 
