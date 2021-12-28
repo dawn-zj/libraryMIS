@@ -2,18 +2,28 @@ package cn.com.gs.common.util.pdf;
 
 import cn.com.gs.common.define.Constants;
 import cn.com.gs.common.exception.NetGSRuntimeException;
+import cn.com.gs.common.util.FileUtil;
+import cn.com.gs.common.util.HexUtil;
 import cn.com.gs.common.util.StringUtil;
+import cn.com.gs.common.util.crypto.KeyUtil;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.*;
 import com.itextpdf.text.pdf.security.*;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.bouncycastle.jce.provider.X509CertParser;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.security.Security;
 import java.security.cert.Certificate;
+import java.security.cert.X509Certificate;
+import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
 
 /**
  * 参考文章：https://blog.csdn.net/tomatocc/article/details/80762507
@@ -91,6 +101,7 @@ public class PdfStampUtil {
      * @throws Exception
      */
     public boolean verifySign(byte[] pdfData) throws Exception {
+        System.out.println(pdfData.length);
         PdfReader reader = new PdfReader(pdfData);
         AcroFields fields = reader.getAcroFields();
         ArrayList<String> names = fields.getSignatureNames();
@@ -99,8 +110,14 @@ public class PdfStampUtil {
             PdfDictionary dictionary = fields.getSignatureDictionary(signName);
 
             PdfName sub = dictionary.getAsName(PdfName.SUBFILTER);
-            if (PdfName.ETSI_CADES_DETACHED.equals(sub)) {
+            if (PdfName.ETSI_CADES_DETACHED.equals(sub)
+                    || PdfName.ADBE_PKCS7_DETACHED.equals(sub)
+                    || PdfName.ADBE_X509_RSA_SHA1.equals(sub)) {
                 PdfPKCS7 pkcs7 = fields.verifySignature(signName);
+
+                X509Certificate x509Certificate = pkcs7.getSigningCertificate();
+                System.out.println(StringUtil.format("certDn: {}", x509Certificate.getSubjectDN()));
+
                 return pkcs7.verify();
 
             } else {
@@ -109,6 +126,52 @@ public class PdfStampUtil {
         }
         return false;
     }
+
+//    private byte[] parsePdfPlain(byte[] pdfData, PdfArray byteRange) throws Exception {
+//        if (byteRange.size() != 4) {
+//            // todo 异常
+//        }
+//
+//        // [0, 283, 805, 37684]
+//        int start1 = byteRange.getAsNumber(0).intValue();
+//        int length1 = byteRange.getAsNumber(1).intValue();
+//        int start2 = byteRange.getAsNumber(2).intValue();
+//        int length2 = byteRange.getAsNumber(3).intValue();
+//        byte[] plain = new byte[length1 + length2];
+//        System.out.println(byteRange.toString());
+//        System.arraycopy(pdfData, start1, plain, 0, length1);
+//        System.arraycopy(pdfData, start2, plain, length1, length2);
+//
+//        FileUtil.storeFile("F:/temp/stamp-2-plain.pdf", plain);
+//        return plain;
+//    }
+//
+//    private byte[] parsePdfSigned(byte[] pdfData, PdfArray byteRange) throws Exception {
+//        if (byteRange.size() != 4) {
+//            // todo 异常
+//        }
+//
+//        // [0, 283, 805, 37684]
+//        int length1 = byteRange.getAsNumber(1).intValue();
+//        int start2 = byteRange.getAsNumber(2).intValue();
+//        byte[] signed = new byte[start2 - length1];
+//        System.out.println(byteRange.toString());
+//        System.arraycopy(pdfData, length1, signed, 0, start2 - length1);
+//
+//        return signed;
+//
+//    }
+//
+//    private X509Certificate parsePdfCert(byte[] pdfStampData, PdfString certStr) throws Exception {
+//        X509CertParser x509CertParser = new X509CertParser();
+//        x509CertParser.engineInit(new ByteArrayInputStream(certStr.getBytes()));
+//        Collection collection = x509CertParser.engineReadAll();
+//        X509Certificate certificate = (X509Certificate) collection.iterator().next();
+//
+//        System.out.println("dn: " + certificate.getSubjectDN());
+//        System.out.println("alg: " + certificate.getSigAlgName());
+//        return certificate;
+//    }
 
 }
 
